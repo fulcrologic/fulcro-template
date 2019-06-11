@@ -6,13 +6,8 @@
     [com.wsscode.pathom.core :as p]
     [com.wsscode.common.async-clj :refer [let-chan]]
     [clojure.core.async :as async]
-
-    ;; Central registry
-    [app.server-components.pathom-wrappers :refer [pathom-registry]]
-    [app.server-components.config :refer [config]]
-
-    ;; ALL namespaces that use pathom-wrappers MUST be included for auto-registration to work
-    app.model.user))
+    [app.model.user :as user-model]
+    [app.server-components.config :refer [config]]))
 
 (defn preprocess-parser-plugin
   "Helper to create a plugin that can view/modify the env/tx of a top-level request.
@@ -40,7 +35,7 @@
                        ::p/env     {::p/reader               [p/map-reader pc/parallel-reader
                                                               pc/open-ident-reader p/env-placeholder-reader]
                                     ::p/placeholder-prefixes #{">"}}
-                       ::p/plugins [(pc/connect-plugin {::pc/register (vec (vals @pathom-registry))})
+                       ::p/plugins [(pc/connect-plugin {::pc/register [user-model/resolvers]})
                                     (p/env-wrap-plugin (fn [env]
                                                          ;; Here is where you can dynamically add things to the resolver/mutation
                                                          ;; environment, like the server config, database connections, etc.
