@@ -1,0 +1,31 @@
+{:paths   ["src/main" "resources"]
+
+ :deps    {bidi                              {:mvn/version "2.1.5"}
+           bk/ring-gzip                      {:mvn/version "0.3.0"}
+           com.taoensso/timbre               {:mvn/version "4.10.0"}
+           com.wsscode/pathom                {:mvn/version "2.2.14"}
+           com.fulcrologic/fulcro            {:mvn/version "3.0.0-alpha-4"}
+           com.fulcrologic/fulcro-garden-css {:mvn/version "3.0.1"}
+           garden                            {:mvn/version "1.3.6"}
+           hiccup                            {:mvn/version "1.0.5"}
+           http-kit                          {:mvn/version "2.3.0"}
+           mount                             {:mvn/version "0.1.12"}
+           org.clojure/clojure               {:mvn/version "1.10.1-beta2"}
+           org.clojure/core.async            {:mvn/version "0.4.490"}
+           ring/ring-core                    {:mvn/version "1.7.1"}
+           ring/ring-defaults                {:mvn/version "0.3.2"}}
+
+ :aliases {:clj-tests {:extra-paths ["src/test"]
+                       :main-opts   ["-m" "kaocha.runner"]
+                       :extra-deps  {lambdaisland/kaocha {:mvn/version "0.0-389"}}}
+
+           ;; See https://github.com/clojure-emacs/cider-nrepl/blob/master/deps.edn for Emacs support
+           :dev       {:extra-paths ["src/test" "src/dev" "src/workspaces"]
+                       :jvm-opts    ["-XX:-OmitStackTraceInFastThrow"]
+                       :extra-deps  {org.clojure/clojurescript   {:mvn/version "1.10.520"}
+                                     fulcrologic/fulcro-spec     {:mvn/version "3.1.0"}
+                                     thheller/shadow-cljs        {:mvn/version "2.8.36"}
+                                     binaryage/devtools          {:mvn/version "0.9.10"}
+                                     ;nubank/workspaces           {:mvn/version "1.0.3"},
+                                     ;fulcrologic/fulcro-inspect  {:mvn/version "2.2.4"}
+                                     org.clojure/tools.namespace {:mvn/version "0.3.0-alpha4"}}}}}

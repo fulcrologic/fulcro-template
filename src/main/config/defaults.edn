@@ -1,0 +1,37 @@
+{:legal-origins              #{"localhost" "dev.lvh.me"}
+
+ :org.httpkit.server/config {:port 3000}
+
+ :taoensso.timbre/logging-config
+                             {:level        :info
+                              :ns-whitelist []
+                              :ns-blacklist ["datomic.kv-cluster"
+                                             "datomic.process-monitor"
+                                             "datomic.reconnector2"
+                                             "datomic.common"
+                                             "datomic.peer"
+                                             "datomic.log"
+                                             "datomic.db"
+                                             "datomic.slf4j"
+                                             "org.projectodd.wunderboss.web.Web"
+                                             "shadow.cljs.devtools.server.worker.impl"]}
+
+ ;; The ssl-redirect defaulted to off, but for security should probably be on in production.
+ :ring.middleware/defaults-config
+                             {:params    {:keywordize true
+                                          :multipart  true
+                                          :nested     true
+                                          :urlencoded true}
+                              :cookies   true
+                              :responses {:absolute-redirects     true
+                                          :content-types          true
+                                          :default-charset        "utf-8"
+                                          :not-modified-responses true}
+                              :static    {:resources "public"}
+                              :session   true
+                              :security  {:anti-forgery   true
+                                          :hsts           true
+                                          :ssl-redirect   false
+                                          :frame-options  :sameorigin
+                                          :xss-protection {:enable? true
+                                                           :mode    :block}}}}

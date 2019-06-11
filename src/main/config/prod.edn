@@ -1,0 +1,10 @@
+{;; Legal Origins for API request.
+ :legal-origins                  #{"product.domain" "localhost"}
+
+ :org.httpkit.server/config     {:port 8080}
+
+ :taoensso.timbre/logging-config {:level :info}
+ ;; You probably want these set to true in real production:
+ :ring.middleware/defaults-config
+                                 {:proxy    false
+                                  :security {:ssl-redirect false}}}

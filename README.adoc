@@ -1,0 +1,268 @@
+== The Project
+
+NOTE: The YouTube videos and Developer's Guide are slightly out of date with respect to this template.  This template
+now uses Pathom for server-side mutation and query handling.  See `app/server_components/pathom_wrappers.clj` and
+`app/model/user.clj` for the macro definitions and examples of how to define
+query resolution and mutations on the server-side. The `defmutation` AND `defresolver` in this project look like
+`defn` instead of Fulcro's.
+
+IMPORTANT: This is a Tools Deps Project.  The `project.clj` file is *ONLY* for uberjar generation.  If you're
+opening this project in IntelliJ, open `deps.edn`, NOT `project.clj`.
+
+Dependency Aliases:
+
+You will want to enable the `:dev` dependency while developing this project.  In IntelliJ this is in the
+"Clojure Deps" border tab window under "Aliases".
+
+The main project source is in `src/main`.
+
+```
+├── Makefile                              Simple UNIX make. `make` will run clj/cljs CI tests
+├── karma.conf.js                         CLJS CI tests run through karma
+├── package.json                          JS ecosystem dependencies
+├── project.clj                           Project config file
+├── resources
+│   └── public
+│       ├── favicon.ico                   Placeholder favicon
+│       ├── js
+│       │   └── test
+│       │       └── index.html            For accessing fulcro-spec tests in dev mode
+│       └── workspaces/index.html         For accessing workspaces
+├── shadow-cljs.edn                       Shadow-CLJS Compiler config
+└── src
+    ├── dev
+    │   └── user.clj                      Dev-time functions for controlling web server
+    ├── main
+    │   ├── app
+    │   │   ├── client.cljs               Base client definition
+    │   │   ├── development_preload.cljs  Code that will load early in the browser at dev time.
+    │   │   ├── server_components
+    │   │   │   ├── config.clj            Mount component to load server config (see Fulcro config)
+    │   │   │   ├── http_server.clj       Mount component for http kit server
+    │   │   │   └── middleware.clj        Main middleware for your web server
+    │   │   ├── server_main.clj           CLJ Main for running server from uberjar
+    │   │   └── ui
+    │   │       ├── components.cljs       A place to put random components
+    │   │       └── root.cljs             The root of the main CLJS UI
+    │   └── config
+    │       ├── defaults.edn              Base config file. Sets defaults loaded by server.
+    │       ├── dev.edn                   Dev-time server config. Can override/disable things like SSL
+    │       └── prod.edn                  Production config. Can enable things like proxy support.
+    ├── test
+    │   └── app
+    │       └── sample_spec.cljc          A sample spec that runs against clj AND cljs
+    └── workspaces
+        └── app
+            └── demo_ws.cljs           Sample workspace card.
+```
+
+== Setting Up
+
+The shadow-cljs compiler uses all cljsjs and NPM js dependencies through
+NPM. If you use a library that is in cljsjs you will also have to add
+it to your `package.json`.
+
+You also cannot compile this project until you install the ones it
+depends on already:
+
+```
+$ npm install
+```
+
+or if you prefer `yarn`:
+
+```
+$ yarn install
+```
+
+Adding NPM Javascript libraries is as simple as adding them to your
+`package.json` file and requiring them! See the
+[the Shadow-cljs User's Guide](https://shadow-cljs.github.io/docs/UsersGuide.html#_javascript)
+for more information.
+
+== Development Mode
+
+Shadow-cljs handles the client-side development build. The file
+`src/main/app/client.cljs` contains the code to start and refresh
+the client for hot code reload.
+
+In general it is easiest just to run the compiler in server mode:
+
+```
+$ npx shadow-cljs server
+INFO: XNIO version 3.3.8.Final
+Nov 10, 2018 8:08:23 PM org.xnio.nio.NioXnio <clinit>
+INFO: XNIO NIO Implementation Version 3.3.8.Final
+shadow-cljs - HTTP server for :test available at http://localhost:8022
+shadow-cljs - HTTP server for :workspaces available at http://localhost:8023
+shadow-cljs - server version: 2.7.2
+shadow-cljs - server running at http://localhost:9630
+shadow-cljs - socket REPL running on port 51936
+shadow-cljs - nREPL server started on port 9000
+...
+```
+
+then *navigate to the server URL* (shown in this example as http://localhost:9630) and
+use the *Builds* menu to enable/disable whichever builds you want watched/running.
+
+Shadow-cljs will also start a web server for any builds that configure one. This
+template configures one for workspaces, and one for tests:
+
+- Workspaces: [http://localhost:8023/workspaces](http://localhost:8023/workspaces)
+- Tests: [http://localhost:8022](http://localhost:8022)
+
+See the server section below for working on the full-stack app itself.
+
+=== Client REPL
+
+The shadow-cljs compiler starts an nREPL. It is configured to start on
+port 9000 (in `shadow-cljs.edn`).
+
+In IntelliJ: add a *remote* Clojure REPL configuration with
+host `localhost` and port `9000`.
+
+then something like:
+
+```
+(shadow/nrepl-select :main)
+```
+
+will connect you to the REPL for a specific build (NOTE: Make sure you have
+a browser running the result, or your REPL won't have anything to talk to!)
+
+If you're using CIDER
+see [the Shadow-cljs User's Guide](https://shadow-cljs.github.io/docs/UsersGuide.html#_cider)
+and the comments in `deps.edn` for more information.
+
+=== The API Server
+
+In order to work with your main application you'll want to
+start your own server that can also serve your application's API.
+
+Start a LOCAL clj nREPL in IntelliJ (using IntelliJ's classpath with
+the `dev` alias selected in the Clojure Deps tab), or from the command line:
+
+```bash
+$ clj -A:dev -J-Dtrace
+user=> (start)
+user=> (stop)
+...
+user=> (restart) ; stop, reload server code, and go again
+user=> (tools-ns/refresh) ; retry code reload if hot server reload fails
+```
+
+The `-J-Dtrace` adds a JVM argument that will enable performance tracing for Fulcro Inspect's network tab so you can
+see how your resolvers and mutations are performing!
+
+The URL to work on your application is then
+[http://localhost:3000](http://localhost:3000).
+
+Hot code reload, preloads, and such are all coded into the javascript.
+
+IMPORTANT: The server comes pre-secured with CSRF protection. If you have
+trouble getting the client to talk to the server make sure you've read
+and understood the security section of the http://book.fulcrologic.com[Developer's Guide].
+
+=== Preloads
+
+There is a preload file that is used on the development build of the
+application `app.development-preload`. You can add code here that
+you want to execute before the application initializes in development
+mode.
+
+=== Fulcro Inspect
+
+Fulcro inspect will preload on the development build of the main
+application and workspaces.  You must install the plugin in Chrome from the
+Chrome store (free) to access it.  It will add a Fulcro Inspect tab to the
+developer tools pane.
+
+== Tests
+
+Tests are in `src/test`. Any test namespace ending in `-test` will be auto-detected.
+
+```
+src/test
+└── app
+    └── sample_test.cljc          spec runnable by client and server.
+```
+
+You can write plain `deftest` in here, and it is preconfigured to support the helper macros in `fulcro-spec` as well.
+
+=== Running tests:
+
+
+==== Clojure Tests
+
+Typically you'll just run your tests using the editor of choice (e.g. Run tests in namspace in IntelliJ).
+
+The tests are also set up to run with Kaocha at the command line for your convenience and CI tools:
+
+```
+$ clj -A:dev:clj-tests --watch
+```
+
+See the https://github.com/lambdaisland/kaocha[Kaocha project] for more details.
+
+==== Clojurescript tests
+
+The tests can be run in any number of browsers simply by navigating to the test URL that shadow-cljs outputs.
+
+CI support is done through the `ci-test` build in shadow, and via Karma.
+
+If you start the `ci-tests` build in Shadow-cljs, then you can also run cljs tests in a terminal "watch mode"
+with:
+
+```
+npx karma start
+```
+
+Of course, this make CLJS CI easy:
+
+```
+npx shadow-cljs compile ci-tests
+npx karma start --single-run
+```
+
+==== Running all Tests Once
+
+There is a UNIX Makefile that includes all of the CI commands as the default target. Just run:
+
+```
+make
+```
+
+== Workspaces
+
+Workspaces is a project by Nubank that is written in Fulcro, and has great support for developing in
+Fulcro. It is similar to devcards but has a more powerful user interface, integration with Fulcro Inspect,
+and much more.
+
+The source directory for making additions to your workspace is `src/workspaces`.
+
+IMPORTANT: Any namespace ending in `-ws` will be auto-detected.
+
+=== Workspaces and CSRF
+
+The server comes preconfigured with CSRF protection.  As such, a token must be
+embedded in the HTML for a client to be able to connect.  If you want to run
+full-stack Fulcro cards, then you'll need that token.
+
+The middleware included in this template can serve a workspaces HTML page that
+has the correct token. The URI is `/wslive.html`. So, if your server is configured
+for port 3000 you'd access your workspaces via `http://localhost:3000/wslive.html`.
+
+Be careful with production deployment.  You may want to disable this HTML file and
+make sure your workspaces js file isn't deployed to production.
+
+== Standalone Runnable Jar (Production, with advanced optimized client js)
+
+This project includes a `project.clj` file that is configure for building an Uberjar.
+
+WARNING: The only purpose of the `project.clj` file is uberjar generation, since at the time of this
+release `depstar` wasn't fully sufficient IMO (no AOT compile or manifest generation).
+
+```
+lein uberjar
+java -jar target/app.jar
+```
