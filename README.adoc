@@ -17,43 +17,6 @@ You will want to enable the `:dev` dependency while developing this project.  In
 The main project source is in `src/main`.
 
 ```
-├── Makefile                              Simple UNIX make. `make` will run clj/cljs CI tests
-├── karma.conf.js                         CLJS CI tests run through karma
-├── package.json                          JS ecosystem dependencies
-├── project.clj                           Project config file
-├── resources
-│   └── public
-│       ├── favicon.ico                   Placeholder favicon
-│       ├── js
-│       │   └── test
-│       │       └── index.html            For accessing fulcro-spec tests in dev mode
-│       └── workspaces/index.html         For accessing workspaces
-├── shadow-cljs.edn                       Shadow-CLJS Compiler config
-└── src
-    ├── dev
-    │   └── user.clj                      Dev-time functions for controlling web server
-    ├── main
-    │   ├── app
-    │   │   ├── client.cljs               Base client definition
-    │   │   ├── development_preload.cljs  Code that will load early in the browser at dev time.
-    │   │   ├── server_components
-    │   │   │   ├── config.clj            Mount component to load server config (see Fulcro config)
-    │   │   │   ├── http_server.clj       Mount component for http kit server
-    │   │   │   └── middleware.clj        Main middleware for your web server
-    │   │   ├── server_main.clj           CLJ Main for running server from uberjar
-    │   │   └── ui
-    │   │       ├── components.cljs       A place to put random components
-    │   │       └── root.cljs             The root of the main CLJS UI
-    │   └── config
-    │       ├── defaults.edn              Base config file. Sets defaults loaded by server.
-    │       ├── dev.edn                   Dev-time server config. Can override/disable things like SSL
-    │       └── prod.edn                  Production config. Can enable things like proxy support.
-    ├── test
-    │   └── app
-    │       └── sample_spec.cljc          A sample spec that runs against clj AND cljs
-    └── workspaces
-        └── app
-            └── demo_ws.cljs           Sample workspace card.
 ```
 
 == Setting Up

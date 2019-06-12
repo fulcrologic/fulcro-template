@@ -33,9 +33,8 @@
 (defmutation upsert-user [{:keys [config ring/request]} {:user/keys [id name]}]
   {::pc/params #{:user/id :user/name}
    ::pc/output [:user/id]}
-  (log/debug "Upsert user with server config that has keys: " (keys config))
-  (log/debug "Ring request that has keys: " (keys request))
   (when (and id name)
+    (Thread/sleep 500)
     (swap! user-database assoc id {:user/id   id
                                    :user/name name})
     ;; Returning the user id allows the UI to query for the result. In this case we're "virtually" adding an address for
