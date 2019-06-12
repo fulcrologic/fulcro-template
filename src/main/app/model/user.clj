@@ -34,6 +34,7 @@
   {::pc/params #{:user/id :user/name}
    ::pc/output [:user/id]}
   (when (and id name)
+    ;; simulate some network delay so you can see the diff between optimistic and network response
     (Thread/sleep 500)
     (swap! user-database assoc id {:user/id   id
                                    :user/name name})

@@ -1,6 +1,8 @@
 (ns app.model.user
+  (:require-macros [com.fulcrologic.fulcro.macros.defmutation :refer [defmutation]])
   (:require
-    [com.fulcrologic.fulcro.mutations :as m :refer [defmutation]]
+    [taoensso.timbre :as log]
+    [com.fulcrologic.fulcro.mutations :as m]
     [com.fulcrologic.fulcro.algorithms.merge :as merge]
     [com.fulcrologic.fulcro.algorithms.data-targeting :as targeting]))
 
@@ -18,10 +20,11 @@
   "Client Mutation: Upsert a user (full-stack. see CLJ version for server-side)."
   [{:user/keys [id name] :as params}]
   (action [{:keys [state]}]
+    (log/info "Upsert user action")
     (swap! state (fn [s]
-                     (-> s
-                       (insert-user* params)
-                       (merge/integrate-ident* [:user/id id] :append [:all-users])))))
+                   (-> s
+                     (insert-user* params)
+                     (merge/integrate-ident* [:user/id id] :append [:all-users])))))
   (remote [env]
     (-> env
       (m/returning 'app.ui.root/User)

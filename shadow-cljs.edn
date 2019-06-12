@@ -6,7 +6,7 @@
 
                        :modules    {:main {:entries [app.client]}}
 
-                       :devtools   {:after-load app.client/start
+                       :devtools   {:after-load app.client/init
                                     :preloads   [com.fulcrologic.fulcro.inspect.preload app.development-preload]}}
 
           :test       {:target           :browser-test

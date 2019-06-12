@@ -17,15 +17,15 @@
 
  :aliases {:clj-tests {:extra-paths ["src/test"]
                        :main-opts   ["-m" "kaocha.runner"]
-                       :extra-deps  {lambdaisland/kaocha {:mvn/version "0.0-389"}}}
+                       :extra-deps  {lambdaisland/kaocha {:mvn/version "0.0-418"}}}
 
            ;; See https://github.com/clojure-emacs/cider-nrepl/blob/master/deps.edn for Emacs support
            :dev       {:extra-paths ["src/test" "src/dev" "src/workspaces"]
                        :jvm-opts    ["-XX:-OmitStackTraceInFastThrow"]
                        :extra-deps  {org.clojure/clojurescript   {:mvn/version "1.10.520"}
-                                     fulcrologic/fulcro-spec     {:mvn/version "3.1.0"}
+                                     com.taoensso/tufte          {:mvn/version "2.1.0-RC4"}
+                                     fulcrologic/fulcro-spec     {:mvn/version "3.1.2-SNAPSHOT"}
                                      thheller/shadow-cljs        {:mvn/version "2.8.36"}
                                      binaryage/devtools          {:mvn/version "0.9.10"}
                                      ;nubank/workspaces           {:mvn/version "1.0.3"},
-                                     ;fulcrologic/fulcro-inspect  {:mvn/version "2.2.4"}
                                      org.clojure/tools.namespace {:mvn/version "0.3.0-alpha4"}}}}}
