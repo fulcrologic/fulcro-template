@@ -17,6 +17,52 @@ You will want to enable the `:dev` dependency while developing this project.  In
 The main project source is in `src/main`.
 
 ```
+.
+├── Makefile
+├── README.adoc
+├── deps.edn                     ; IMPORT THIS INTO IntelliJ/Cursive
+├── karma.conf.js
+├── package.json
+├── resources
+│   └── public
+│       ├── favicon.ico
+│       ├── js
+│       │   └── test
+│       │       ├── index.html
+│       │       └── js
+│       └── workspaces
+│           └── index.html
+├── shadow-cljs.edn
+├── src
+│   ├── dev
+│   │   └── user.clj              ; Functions for stopping/starting dev mode server
+│   ├── main
+│   │   ├── app
+│   │   │   ├── client.cljs                ; Main CLJS
+│   │   │   ├── development_preload.cljs   ; Code only loaded during dev time
+│   │   │   ├── model
+│   │   │   │   ├── user.clj               ; client/server mutations/model
+│   │   │   │   └── user.cljs
+│   │   │   ├── server_components          ; Files that make up the server itself
+│   │   │   │   ├── config.clj
+│   │   │   │   ├── http_server.clj
+│   │   │   │   ├── middleware.clj
+│   │   │   │   └── pathom.clj
+│   │   │   ├── server_main.clj            ; Production runtime main
+│   │   │   └── ui
+│   │   │       ├── components.cljs        ; Demo components
+│   │   │       └── root.cljs              ; Demo root UI
+│   │   └── config                         ; server config files. See config docs in Fulcro.
+│   │       ├── defaults.edn
+│   │       ├── dev.edn
+│   │       └── prod.edn
+│   ├── test
+│   │   └── app
+│   │       └── sample_test.cljc
+│   └── workspaces
+│       └── app
+│           └── demo_ws.cljs
+└── tests.edn
 ```
 
 == Setting Up
@@ -71,7 +117,7 @@ use the *Builds* menu to enable/disable whichever builds you want watched/runnin
 Shadow-cljs will also start a web server for any builds that configure one. This
 template configures one for workspaces, and one for tests:
 
-- Workspaces: [http://localhost:8023/workspaces](http://localhost:8023/workspaces)
+- NOT YET PORTED: Workspaces: [http://localhost:8023/workspaces](http://localhost:8023/workspaces)
 - Tests: [http://localhost:8022](http://localhost:8022)
 
 See the server section below for working on the full-stack app itself.
@@ -197,6 +243,8 @@ make
 
 == Workspaces
 
+NOT PORTED YET.
+
 Workspaces is a project by Nubank that is written in Fulcro, and has great support for developing in
 Fulcro. It is similar to devcards but has a more powerful user interface, integration with Fulcro Inspect,
 and much more.
@@ -219,6 +267,8 @@ Be careful with production deployment.  You may want to disable this HTML file a
 make sure your workspaces js file isn't deployed to production.
 
 == Standalone Runnable Jar (Production, with advanced optimized client js)
+
+UNTESTED
 
 This project includes a `project.clj` file that is configure for building an Uberjar.
 
