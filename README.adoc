@@ -152,7 +152,7 @@ Start a LOCAL clj nREPL in IntelliJ (using IntelliJ's classpath with
 the `dev` alias selected in the Clojure Deps tab), or from the command line:
 
 ```bash
-$ clj -A:dev -J-Dtrace
+$ clj -A:dev -J-Dtrace -J-Dghostwheel.enabled=true
 user=> (start)
 user=> (stop)
 ...
@@ -161,7 +161,10 @@ user=> (tools-ns/refresh) ; retry code reload if hot server reload fails
 ```
 
 The `-J-Dtrace` adds a JVM argument that will enable performance tracing for Fulcro Inspect's network tab so you can
-see how your resolvers and mutations are performing!
+see how your resolvers and mutations are performing.
+
+The `-J-Dghostwheel.enabled=true` turns on ghostwheel instrumentation of ghostwheel spec'd functions, which is a wrapper
+of Clojure spec that makes instrumentation and production-time elision (for performance and size) much easier.
 
 The URL to work on your application is then
 [http://localhost:3000](http://localhost:3000).

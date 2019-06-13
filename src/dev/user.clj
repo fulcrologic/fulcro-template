@@ -1,12 +1,16 @@
 (ns user
   (:require
     [clojure.tools.namespace.repl :as tools-ns :refer [set-refresh-dirs]]
+    [expound.alpha :as expound]
+    [clojure.spec.alpha :as s]
     [mount.core :as mount]
     ;; this is the top-level dependent component...mount will find the rest via ns requires
     [app.server-components.http-server :refer [http-server]]))
 
 ;; ==================== SERVER ====================
 (set-refresh-dirs "src/main" "src/dev" "src/test")
+;; Change the default output of spec to be more readable
+(alter-var-root #'s/*explain-out* (constantly expound/printer))
 
 (defn start
   "Start the web server"

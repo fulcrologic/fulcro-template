@@ -6,8 +6,9 @@
     [com.wsscode.pathom.core :as p]
     [com.wsscode.common.async-clj :refer [let-chan]]
     [clojure.core.async :as async]
-    [app.model.user :as user-model]
-    [app.server-components.config :refer [config]]))
+    [app.model.account :as acct]
+    [app.server-components.config :refer [config]]
+    [app.model.mock-database :as db]))
 
 (defn preprocess-parser-plugin
   "Helper to create a plugin that can view/modify the env/tx of a top-level request.
@@ -28,27 +29,33 @@
   (log/debug "Pathom transaction:" (pr-str tx))
   req)
 
-(defstate parser
-  :start
+(defn build-parser [db-connection]
   (let [real-parser (p/parallel-parser
                       {::p/mutate  pc/mutate-async
                        ::p/env     {::p/reader               [p/map-reader pc/parallel-reader
                                                               pc/open-ident-reader p/env-placeholder-reader]
                                     ::p/placeholder-prefixes #{">"}}
-                       ::p/plugins [(pc/connect-plugin {::pc/register [user-model/resolvers]})
+                       ::p/plugins [(pc/connect-plugin {::pc/register [acct/resolvers]})
                                     (p/env-wrap-plugin (fn [env]
                                                          ;; Here is where you can dynamically add things to the resolver/mutation
                                                          ;; environment, like the server config, database connections, etc.
-                                                         (assoc env :config config)))
+                                                         (assoc env
+                                                           :db @db-connection ; real datomic would use (d/db db-connection)
+                                                           :connection db-connection
+                                                           :config config)))
                                     (preprocess-parser-plugin log-requests)
                                     (p/post-process-parser-plugin p/elide-not-found)
                                     p/request-cache-plugin
                                     p/error-handler-plugin
                                     p/trace-plugin]})
-        ;; NOTE: Add -Dtrace to the server JVM to enable Fulcro Inspect query performance traces to the network tab!
+        ;; NOTE: Add -Dtrace to the server JVM to enable Fulcro Inspect query performance traces to the network tab.
+        ;; Understand that this makes the network responses much larger and should not be used in production.
         trace?      (not (nil? (System/getProperty "trace")))]
     (fn wrapped-parser [env tx]
       (async/<!! (real-parser env (if trace?
                                     (conj tx :com.wsscode.pathom/trace)
                                     tx))))))
+
+(defstate parser
+  :start (build-parser db/conn))
 

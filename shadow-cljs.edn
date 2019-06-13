@@ -1,34 +1,38 @@
 {:deps   {:aliases [:dev]}
  :nrepl  {:port 9000}
- :builds {:main       {:target     :browser
-                       :output-dir "resources/public/js/main"
-                       :asset-path "/js/main"
+ :builds {:main     {:target     :browser
+                     :output-dir "resources/public/js/main"
+                     :asset-path "/js/main"
 
-                       :modules    {:main {:entries [app.client]}}
+                     :modules    {:main {:entries [app.client]}}
+                     ;; ghostwheel enforcement only during dev
+                     :dev        {:compiler-options
+                                  {:external-config {:ghostwheel {}}}}
 
-                       :devtools   {:after-load app.client/init
-                                    :preloads   [com.fulcrologic.fulcro.inspect.preload app.development-preload]}}
+                     :devtools   {:after-load app.client/init
+                                  :preloads   [com.fulcrologic.fulcro.inspect.preload app.development-preload]}}
 
-          :test       {:target           :browser-test
-                       :test-dir         "resources/public/js/test"
-                       :ns-regexp        "-test$"
-                       :compiler-options {:static-fns false ; required for mocking to work
-                                          }
-                       :devtools         {:http-port          8022
-                                          :http-resource-root "public"
-                                          :http-root          "resources/public/js/test"}}
+          :test     {:target           :browser-test
+                     :test-dir         "resources/public/js/test"
+                     :ns-regexp        "-test$"
+                     ;; required for mocking to work
+                     :compiler-options {:static-fns      false
+                                        :external-config {:ghostwheel {}}}
+                     :devtools         {:http-port          8022
+                                        :http-resource-root "public"
+                                        :http-root          "resources/public/js/test"}}
 
-          :ci-tests   {:target           :karma
-                       :js-options       {:js-provider :shadow}
-                       :compiler-options {:static-fns false} ; required for mocking to work
-                       :output-to        "target/ci.js"
-                       :ns-regexp        "-test$"}
+          :ci-tests {:target           :karma
+                     :js-options       {:js-provider :shadow}
+                     :compiler-options {:static-fns false}  ; required for mocking to work
+                     :output-to        "target/ci.js"
+                     :ns-regexp        "-test$"}
 
           #_#_:workspaces {:target     nubank.workspaces.shadow-cljs.target
-                       :ns-regexp  "-(test|ws)$"
-                       :output-dir "resources/public/workspaces/js"
-                       :asset-path "/workspaces/js"
-                       :devtools   {:preloads           [fulcro.inspect.preload]
-                                    :http-root          "resources/public"
-                                    :http-port          8023
-                                    :http-resource-root "."}}}}
+                           :ns-regexp  "-(test|ws)$"
+                           :output-dir "resources/public/workspaces/js"
+                           :asset-path "/workspaces/js"
+                           :devtools   {:preloads           [fulcro.inspect.preload]
+                                        :http-root          "resources/public"
+                                        :http-port          8023
+                                        :http-resource-root "."}}}}

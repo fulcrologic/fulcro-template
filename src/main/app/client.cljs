@@ -14,8 +14,7 @@
 
 
 (defonce SPA (app/fulcro-app
-               {:client-did-mount (fn [app]
-                                    (df/load! app :all-users root/User))
+               {
                 ;; This ensures your client can talk to a CSRF-protected server.
                 ;; See middleware.clj to see how the token is embedded into the HTML
                 :remotes          {:remote (net/fulcro-http-remote

@@ -12,6 +12,10 @@
            mount                             {:mvn/version "0.1.12"}
            org.clojure/clojure               {:mvn/version "1.10.1-beta2"}
            org.clojure/core.async            {:mvn/version "0.4.490"}
+
+           ;; To simulate Datomic on the back-end
+           datascript                        {:mvn/version "0.18.4"}
+
            ring/ring-core                    {:mvn/version "1.7.1"}
            ring/ring-defaults                {:mvn/version "0.3.2"}}
 
@@ -23,6 +27,7 @@
            :dev       {:extra-paths ["src/test" "src/dev" "src/workspaces"]
                        :jvm-opts    ["-XX:-OmitStackTraceInFastThrow"]
                        :extra-deps  {org.clojure/clojurescript   {:mvn/version "1.10.520"}
+                                     expound                     {:mvn/version "0.7.2"}
                                      com.taoensso/tufte          {:mvn/version "2.1.0-RC4"}
                                      fulcrologic/fulcro-spec     {:mvn/version "3.1.2-SNAPSHOT"}
                                      thheller/shadow-cljs        {:mvn/version "2.8.36"}
