@@ -5,9 +5,9 @@
     [app.ui.root :as root]
     [com.fulcrologic.fulcro.networking.http-remote :as net]
     [com.fulcrologic.fulcro.data-fetch :as df]
-    [taoensso.timbre :as log]
     [com.fulcrologic.fulcro.ui-state-machines :as uism]
-    [app.model.session :as session]))
+    [app.model.session :as session]
+    [taoensso.timbre :as log]))
 
 (defn ^:export refresh []
   (log/info "Hot code Remount")
