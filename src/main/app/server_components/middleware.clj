@@ -46,8 +46,7 @@
       [:script (str "var fulcro_network_csrf_token = '" csrf-token "';")]]
      [:body
       [:div#app]
-      [:script {:src "js/main/main.js"}]
-      [:script "app.client.init();"]]]))
+      [:script {:src "js/main/main.js"}]]]))
 
 ;; ================================================================================
 ;; Workspaces can be accessed via shadow's http server on http://localhost:8023/workspaces.html

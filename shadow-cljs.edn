@@ -4,12 +4,13 @@
                      :output-dir "resources/public/js/main"
                      :asset-path "/js/main"
 
-                     :modules    {:main {:entries [app.client]}}
+                     :modules    {:main {:init-fn app.client/init
+                                         :entries [app.client]}}
                      ;; ghostwheel enforcement only during dev
                      :dev        {:compiler-options
                                   {:external-config {:ghostwheel {}}}}
 
-                     :devtools   {:after-load app.client/init
+                     :devtools   {:after-load app.client/refresh
                                   :preloads   [com.fulcrologic.fulcro.inspect.preload app.development-preload]}}
 
           :test     {:target           :browser-test

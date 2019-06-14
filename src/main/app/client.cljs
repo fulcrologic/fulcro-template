@@ -1,26 +1,22 @@
 (ns app.client
   (:require
+    [app.application :refer [SPA]]
     [com.fulcrologic.fulcro.application :as app]
     [app.ui.root :as root]
     [com.fulcrologic.fulcro.networking.http-remote :as net]
     [com.fulcrologic.fulcro.data-fetch :as df]
-    [taoensso.timbre :as log]))
+    [taoensso.timbre :as log]
+    [com.fulcrologic.fulcro.ui-state-machines :as uism]
+    [app.model.session :as session]))
 
-(def secured-request-middleware
-  ;; The CSRF token is embedded via server_components/html.clj
-  (->
-    (net/wrap-csrf-token (or js/fulcro_network_csrf_token "TOKEN-NOT-IN-HTML!"))
-    (net/wrap-fulcro-request)))
-
-
-(defonce SPA (app/fulcro-app
-               {
-                ;; This ensures your client can talk to a CSRF-protected server.
-                ;; See middleware.clj to see how the token is embedded into the HTML
-                :remotes          {:remote (net/fulcro-http-remote
-                                             {:url                "/api"
-                                              :request-middleware secured-request-middleware})}}))
+(defn ^:export refresh []
+  (log/info "Hot code Remount")
+  (app/mount! SPA root/Root "app"))
 
 (defn ^:export init []
-  (log/info "Remount")
-  (app/mount! SPA root/Root "app"))
+  (log/info "Application starting.")
+  (app/mount! SPA root/Root "app")
+  (log/info "Starting session machine.")
+  (uism/begin! SPA session/session-machine ::session/session
+    {:actor/login-form      root/Login
+     :actor/current-session session/Session}))
