@@ -19,4 +19,4 @@
   (log/info "Starting session machine.")
   (uism/begin! SPA session/session-machine ::session/session
     {:actor/login-form      root/Login
-     :actor/current-session session/Session}))
+     :actor/current-session root/Session}))

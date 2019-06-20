@@ -14,3 +14,6 @@
                 :remotes {:remote (net/fulcro-http-remote
                                     {:url                "/api"
                                      :request-middleware secured-request-middleware})}}))
+
+(comment
+  (-> SPA (::app/runtime-atom) deref ::app/indexes))

@@ -48,9 +48,9 @@
                                                            :connection db-connection
                                                            :config config)))
                                     (preprocess-parser-plugin log-requests)
-                                    (p/post-process-parser-plugin p/elide-not-found)
-                                    p/request-cache-plugin
                                     p/error-handler-plugin
+                                    p/request-cache-plugin
+                                    (p/post-process-parser-plugin p/elide-not-found)
                                     p/trace-plugin]})
         ;; NOTE: Add -Dtrace to the server JVM to enable Fulcro Inspect query performance traces to the network tab.
         ;; Understand that this makes the network responses much larger and should not be used in production.
