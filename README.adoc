@@ -1,5 +1,8 @@
 == The Project
 
+WARNING: This template is in progress. The README is out of date, and at any given time it might not even be working. This
+is not ready for general consumption yet.
+
 NOTE: The YouTube videos and Developer's Guide are slightly out of date with respect to this template.  This template
 now uses Pathom for server-side mutation and query handling.  See `app/server_components/pathom_wrappers.clj` and
 `app/model/user.clj` for the macro definitions and examples of how to define
@@ -258,6 +261,8 @@ IMPORTANT: Any namespace ending in `-ws` will be auto-detected.
 
 === Workspaces and CSRF
 
+TODO: Workspaces not ported yet.
+
 The server comes preconfigured with CSRF protection.  As such, a token must be
 embedded in the HTML for a client to be able to connect.  If you want to run
 full-stack Fulcro cards, then you'll need that token.
@@ -271,14 +276,4 @@ make sure your workspaces js file isn't deployed to production.
 
 == Standalone Runnable Jar (Production, with advanced optimized client js)
 
-UNTESTED
-
-This project includes a `project.clj` file that is configure for building an Uberjar.
-
-WARNING: The only purpose of the `project.clj` file is uberjar generation, since at the time of this
-release `depstar` wasn't fully sufficient IMO (no AOT compile or manifest generation).
-
-```
-lein uberjar
-java -jar target/app.jar
-```
+TODO: Use tools deps setup to build runnable jar...
