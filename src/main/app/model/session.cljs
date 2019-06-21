@@ -1,13 +1,13 @@
 (ns app.model.session
   (:require
     [app.application :refer [SPA]]
-    [com.fulcrologic.fulcro.dom :as dom :refer [div ul li p h3 button]]
-    [com.fulcrologic.fulcro.components :as prim :refer [defsc]]
     [com.fulcrologic.fulcro.routing.dynamic-routing :as dr]
     [com.fulcrologic.fulcro.ui-state-machines :as uism]
     [taoensso.timbre :as log]
     [com.fulcrologic.fulcro.components :as comp]
-    [com.fulcrologic.fulcro.mutations :as m]))
+    [com.fulcrologic.fulcro.mutations :as m :refer [defmutation]]
+    [com.fulcrologic.fulcro.algorithms.form-state :as fs]
+    [clojure.string :as str]))
 
 (defn clear [env]
   (uism/assoc-aliased env :error ""))
@@ -27,7 +27,8 @@
        :password          (:password event-data)
        ::m/returning      (uism/actor-class env :actor/current-session)
        ::uism/ok-event    :event/complete
-       ::uism/error-event :event/failed})))
+       ::uism/error-event :event/failed})
+    (uism/activate :state/checking-session)))
 
 (defn process-session-result [env error-message]
   (let [success? (uism/alias-value env :session-valid?)]
@@ -57,42 +58,63 @@
 
    ::uism/states
    {:initial
-    {::uism/target-states #{:state/checking-session}
-     ::uism/handler       (fn [env]
-                            (-> env
-                              (uism/assoc-aliased :error "")
-                              (uism/set-timeout :network-timer :event/timeout {} 2000 #{:event/complete})
-                              (uism/load ::current-session :actor/current-session
-                                {::uism/ok-event    :event/complete
-                                 ::uism/error-event :event/failed})
-                              (uism/activate :state/checking-session)))}
+    {::uism/target-states #{:state/logged-in :state/logged-out}
+     ::uism/events        {::uism/started  {::uism/handler (fn [env]
+                                                             (-> env
+                                                               (uism/assoc-aliased :error "")
+                                                               (uism/load ::current-session :actor/current-session
+                                                                 {::uism/ok-event    :event/complete
+                                                                  ::uism/error-event :event/failed})))}
+                           :event/failed   {::uism/target-state :state/logged-out}
+                           :event/complete {::uism/target-states #{:state/logged-in :state/logged-out}
+                                            ::uism/handler       #(process-session-result % "")}}}
 
     :state/checking-session
     {::uism/events (merge global-events
-                     {:event/timeout  {::uism/target-states #{:state/logged-out}
-                                       ::uism/handler       (fn [env]
-                                                              (-> env
-                                                                (clear)
-                                                                (logout)
-                                                                (uism/assoc-aliased :error "Server unavailable.")))}
-
-                      :event/failed   {::uism/target-states #{:state/logged-out}
+                     {:event/failed   {::uism/target-states #{:state/logged-out}
                                        ::uism/handler       (fn [env]
                                                               (-> env
                                                                 (clear)
                                                                 (uism/assoc-aliased :error "Server error.")))}
-                      :event/complete {::uism/handler #(process-session-result % "")}})}
+                      :event/complete {::uism/target-states #{:state/logged-out :state/logged-in}
+                                       ::uism/handler       #(process-session-result % "Invalid Credentials.")}})}
 
     :state/logged-in
     {::uism/events (merge global-events
                      {:event/logout {::uism/target-states #{:state/logged-out}
-                                     ::uism/target-state  :state/logged-out
                                      ::uism/handler       logout}})}
 
     :state/logged-out
     {::uism/events (merge global-events
-                     {:event/login    {::uism/target-states #{:state/logged-out :state/logged-in}
-                                       ::uism/handler       login}
-                      :event/failed   {::uism/hander (fn [env] (-> env clear (uism/assoc-aliased :error "Server error. Try again later.")))}
-                      :event/complete {::uism/handler #(process-session-result % "Invalid credentials.")}})}}})
+                     {:event/login {::uism/target-states #{:state/checking-session}
+                                    ::uism/handler       login}})}}})
+
+(def signup-ident [:component/id :signup])
+(defn signup-class [] (comp/registry-key->class :app.ui.root/Signup))
+
+(defn clear-signup-form*
+  "Mutation helper: Updates state map with a cleared signup form that is configured for form state support."
+  [state-map]
+  (-> state-map
+    (assoc-in signup-ident
+      {:account/email          ""
+       :account/password       ""
+       :account/password-again ""})
+    (fs/add-form-config* (signup-class) signup-ident)))
+
+(defmutation clear-signup-form [_]
+  (action [{:keys [state]}]
+    (swap! state clear-signup-form*)))
+
+(defn valid-email? [email] (str/includes? email "@"))
+(defn valid-password? [password] (> (count password) 7))
+
+(defmutation signup! [_]
+  (action [{:keys [state]}]
+    (log/info "Marking complete")
+    (swap! state fs/mark-complete* signup-ident))
+  (remote [{:keys [state] :as env}]
+    (let [{:account/keys [email password password-again]} (get-in @state signup-ident)]
+      (boolean (and (valid-email? email) (valid-password? password)
+                 (= password password-again))))))
 

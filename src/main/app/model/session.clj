@@ -8,6 +8,8 @@
     [clojure.spec.alpha :as s]
     [com.fulcrologic.fulcro.server.api-middleware :as fmw]))
 
+(defonce account-database (atom {}))
+
 (defresolver current-session-resolver [env input]
   {::pc/output [{::current-session [:session/valid? :account/name]}]}
   (let [{:keys [account/name session/valid?]} (get-in env [:ring/request :session])]
@@ -28,20 +30,26 @@
           (assoc resp :session new-session))))))
 
 (defmutation login [env {:keys [username password]}]
-  {::pc/symbol `login
-   ::pc/output [:session/valid? :account/name]}
+  {::pc/output [:session/valid? :account/name]}
   (log/info "Authenticating" username)
-  (if (and (seq username) (= password "letmein"))
-    (response-updating-session env
-      {:session/valid? true
-       :account/name   username})
-    (do
-      (log/error "Invalid credentials supplied for" username)
-      (throw (ex-info "Invalid credentials" {:username username})))))
+  (let [{expected-email    :email
+         expected-password :password} (get @account-database username)]
+    (if (and (= username expected-email) (= password expected-password))
+      (response-updating-session env
+        {:session/valid? true
+         :account/name   username})
+      (do
+        (log/error "Invalid credentials supplied for" username)
+        (throw (ex-info "Invalid credentials" {:username username}))))))
 
 (defmutation logout [env params]
-  {::pc/symbol `login
-   ::pc/output [:session/valid?]}
+  {::pc/output [:session/valid?]}
   (response-updating-session env {:session/valid? false :account/name ""}))
 
-(def resolvers [current-session-resolver login logout])
+(defmutation signup! [env {:keys [email password]}]
+  {::pc/output [:signup/result]}
+  (swap! account-database assoc email {:email    email
+                                       :password password})
+  {:signup/result "OK"})
+
+(def resolvers [current-session-resolver login logout signup!])
