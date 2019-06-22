@@ -23,18 +23,18 @@
         error-message))))
 
 (defsc Signup [this {:account/keys [email password password-again] :as props}]
-  {:query         [:account/email :account/password :account/password-again fs/form-config-join]
-   :initial-state (fn [_]
-                    (fs/add-form-config Signup
-                      {:account/email          ""
-                       :account/password       ""
-                       :account/password-again ""}))
-   :form-fields   #{:account/email :account/password :account/password-again}
-   :ident         (fn [] session/signup-ident)
-   :route-segment ["signup"]
-   :will-enter    (fn [app _]
-                    (comp/transact! app [(session/clear-signup-form)])
-                    (dr/route-immediate [:component/id :signup]))}
+  {:query             [:account/email :account/password :account/password-again fs/form-config-join]
+   :initial-state     (fn [_]
+                        (fs/add-form-config Signup
+                          {:account/email          ""
+                           :account/password       ""
+                           :account/password-again ""}))
+   :form-fields       #{:account/email :account/password :account/password-again}
+   :ident             (fn [] session/signup-ident)
+   :route-segment     ["signup"]
+   :componentDidMount (fn [this]
+                        (comp/transact! this [(session/clear-signup-form)]))
+   :will-enter        (fn [app _] (dr/route-immediate [:component/id :signup]))}
   (let [submit!  (fn [evt]
                    (when (or (identical? true evt) (evt/enter-key? evt))
                      (comp/transact! this [(session/signup! {:email email :password password})])
