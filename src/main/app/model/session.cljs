@@ -60,6 +60,7 @@
    {:initial
     {::uism/target-states #{:state/logged-in :state/logged-out}
      ::uism/events        {::uism/started  {::uism/handler (fn [env]
+                                                             (dr/change-route SPA ["main"])
                                                              (-> env
                                                                (uism/assoc-aliased :error "")
                                                                (uism/load ::current-session :actor/current-session
@@ -113,6 +114,8 @@
   (action [{:keys [state]}]
     (log/info "Marking complete")
     (swap! state fs/mark-complete* signup-ident))
+  (ok-action [{:keys [app state]}]
+    (dr/change-route app ["signup-success"]))
   (remote [{:keys [state] :as env}]
     (let [{:account/keys [email password password-again]} (get-in @state signup-ident)]
       (boolean (and (valid-email? email) (valid-password? password)

@@ -5,8 +5,8 @@
            com.taoensso/timbre                 {:mvn/version "4.10.0"}
            com.wsscode/pathom                  {:mvn/version "2.2.15"}
            com.fulcrologic/fulcro              {:local/root "/Users/tonykay/fulcrologic/fulcro3"}
-           com.fulcrologic/fulcro-garden-css   {:local/root "/Users/tonykay/fulcrologic/fulcro-garden-css"}
-           com.fulcrologic/semantic-ui-wrapper {:local/root "/Users/tonykay/fulcrologic/semantic-ui-wrapper"}
+           com.fulcrologic/fulcro-garden-css   {:mvn/version "3.0.4"}
+           com.fulcrologic/semantic-ui-wrapper {:mvn/version "1.0.0-SNAPSHOT"}
            gnl/ghostwheel                      {:mvn/version "0.4.0-SNAPSHOT"}
            garden                              {:mvn/version "1.3.6"}
            hiccup                              {:mvn/version "1.0.5"}
@@ -31,7 +31,7 @@
                        :extra-deps  {org.clojure/clojurescript   {:mvn/version "1.10.520"}
                                      expound                     {:mvn/version "0.7.2"}
                                      com.taoensso/tufte          {:mvn/version "2.1.0-RC4"}
-                                     fulcrologic/fulcro-spec     {:mvn/version "3.1.2-SNAPSHOT"}
+                                     fulcrologic/fulcro-spec     {:mvn/version "3.1.2"}
                                      binaryage/devtools          {:mvn/version "0.9.10"}
                                      ;nubank/workspaces           {:mvn/version "1.0.3"},
                                      org.clojure/tools.namespace {:mvn/version "0.3.0"}}}}}

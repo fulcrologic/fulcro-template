@@ -22,6 +22,16 @@
       (dom/div :.ui.error.message {:classes [(when valid? "hidden")]}
         error-message))))
 
+(defsc SignupSuccess [this props]
+  {:query         ['*]
+   :initial-state {}
+   :ident         (fn [] [:component/id :signup-success])
+   :route-segment ["signup-success"]
+   :will-enter    (fn [app _] (dr/route-immediate [:component/id :signup-success]))}
+  (div
+    (dom/h3 "Signup Complete!")
+    (dom/p "You can now log in!")))
+
 (defsc Signup [this {:account/keys [email password password-again] :as props}]
   {:query             [:account/email :account/password :account/password-again fs/form-config-join]
    :initial-state     (fn [_]
@@ -83,7 +93,7 @@
    :ident         (fn [] [:component/id :login])}
   (let [current-state (uism/get-active-state this ::session/session)
         {current-user :account/name} current-session
-        initial?      (= :initial (log/spy :info current-state))
+        initial?      (= :initial current-state)
         loading?      (= :state/checking-session current-state)
         logged-in?    (= :state/logged-in current-state)
         {:keys [floating-menu]} (css/get-classnames Login)
@@ -95,8 +105,8 @@
             (dom/button :.item
               {:onClick #(uism/trigger! this ::session/session :event/logout)}
               (dom/span current-user) ent/nbsp "Log out")
-            (dom/a :.item {:style   {:position "relative"}
-                           :onClick #(uism/trigger! this ::session/session :event/toggle-modal)}
+            (dom/div :.item {:style   {:position "relative"}
+                             :onClick #(uism/trigger! this ::session/session :event/toggle-modal)}
               "Login"
               (when open?
                 (dom/div :.four.wide.ui.raised.teal.segment {:onClick (fn [e]
@@ -117,22 +127,36 @@
                       (dom/button :.ui.button
                         {:onClick (fn [] (uism/trigger! this ::session/session :event/login {:username email
                                                                                              :password password}))
-                         :classes [(when loading? "loading")]} "Login"))))))))))))
+                         :classes [(when loading? "loading")]} "Login"))
+                    (div :.ui.message
+                      (dom/p "Don't have an account?")
+                      (dom/a {:onClick (fn []
+                                         (uism/trigger! this ::session/session :event/toggle-modal {})
+                                         (dr/change-route this ["signup"]))}
+                        "Please sign up!"))))))))))))
 
 (def ui-login (comp/factory Login))
 
 (defsc Main [this props]
-  {:query           [:main/welcome-message]
-   :initial-state   {:main/welcome-message "Hi!"}
-   :ident           (fn [] [:component/id :main])
-   :route-segment   ["main"]
-   :will-enter      (fn [_ _] (dr/route-immediate [:component/id :main]))
-   :route-cancelled (fn [p])}
-  (dom/div :.ui.segment
-    "MAIN"))
+  {:query         [:main/welcome-message]
+   :initial-state {:main/welcome-message "Hi!"}
+   :ident         (fn [] [:component/id :main])
+   :route-segment ["main"]
+   :will-enter    (fn [_ _] (dr/route-immediate [:component/id :main]))}
+  (div :.ui.container.segment
+    (h3 "Main")))
+
+(defsc Settings [this {:keys [:account/time-zone :account/real-name] :as props}]
+  {:query         [:account/time-zone :account/real-name]
+   :ident         (fn [] [:component/id :settings])
+   :route-segment ["settings"]
+   :will-enter    (fn [_ _] (dr/route-immediate [:component/id :settings]))
+   :initial-state {}}
+  (div :.ui.container.segment
+    (h3 "Settings")))
 
 (dr/defrouter TopRouter [this props]
-  {:router-targets [Main Signup]})
+  {:router-targets [Main Signup SignupSuccess Settings]})
 
 (def ui-top-router (comp/factory TopRouter))
 
@@ -148,21 +172,32 @@
 
 (def ui-session (prim/factory Session))
 
-(defsc Root [this {:root/keys [router current-session login]}]
+(defsc TopChrome [this {:root/keys [router current-session login]}]
   {:query         [{:root/router (comp/get-query TopRouter)}
                    {:root/current-session (comp/get-query Session)}
+                   [::uism/asm-id ::TopRouter]
                    {:root/login (comp/get-query Login)}]
+   :ident         (fn [] [:component/id :top-chrome])
    :initial-state {:root/router          {}
                    :root/login           {}
                    :root/current-session {}}}
-  (let [{:keys [session/valid?]} current-session]
+  (let [current-tab (some-> (dr/current-route this this) first keyword)]
     (div :.ui.container
       (div :.ui.secondary.pointing.menu
-        (dom/a :.active.item {:onClick (fn [] (dr/change-route this ["main"]))} "Main")
-        (when-not valid?
-          (dom/a :.item {:onClick (fn [] (dr/change-route this ["signup"]))} "Signup"))
+        (dom/a :.item {:classes [(when (= :main current-tab) "active")]
+                       :onClick (fn [] (dr/change-route this ["main"]))} "Main")
+        (dom/a :.item {:classes [(when (= :settings current-tab) "active")]
+                       :onClick (fn [] (dr/change-route this ["settings"]))} "Settings")
         (div :.right.menu
           (ui-login login)))
       (div :.ui.grid
         (div :.ui.row
           (ui-top-router router))))))
+
+(def ui-top-chrome (comp/factory TopChrome))
+
+(defsc Root [this {:root/keys [top-chrome]}]
+  {:query             [{:root/top-chrome (comp/get-query TopChrome)}]
+   :ident             (fn [] [:component/id :ROOT])
+   :initial-state     {:root/top-chrome {}}}
+  (ui-top-chrome top-chrome))
