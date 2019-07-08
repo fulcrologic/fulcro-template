@@ -79,10 +79,9 @@
 (declare Session)
 
 (defsc Login [this {:account/keys [email]
-                    :root/keys    [current-session]
                     :ui/keys      [error open?] :as props}]
   {:query         [:ui/open? :ui/error :account/email
-                   {[:root/current-session '_] (comp/get-query Session)}
+                   {[:component/id :session] (comp/get-query Session)}
                    [::uism/asm-id ::session/session]]
    :css           [[:.floating-menu {:position "absolute !important"
                                      :z-index  1000
@@ -92,7 +91,7 @@
    :initial-state {:account/email "" :ui/error ""}
    :ident         (fn [] [:component/id :login])}
   (let [current-state (uism/get-active-state this ::session/session)
-        {current-user :account/name} current-session
+        {current-user :account/name} (get props [:component/id :session])
         initial?      (= :initial current-state)
         loading?      (= :state/checking-session current-state)
         logged-in?    (= :state/logged-in current-state)
