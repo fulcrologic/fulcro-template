@@ -1,7 +1,7 @@
 (ns app.server-components.config
   (:require
     [mount.core :refer [defstate args]]
-    [com.fulcrologic.fulcro.server.config :refer [load-config]]
+    [com.fulcrologic.fulcro.server.config :refer [load-config!]]
     [taoensso.timbre :as log]))
 
 
@@ -13,7 +13,7 @@
 
 (defstate config
   :start (let [{:keys [config] :or {config "config/dev.edn"}} (args)
-               configuration (load-config {:config-path config})]
+               configuration (load-config! {:config-path config})]
            (log/info "Loaded config" config)
            (configure-logging! configuration)
            configuration))

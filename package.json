@@ -16,7 +16,7 @@
     "karma-cljs-test": "^0.1.0",
     "react": "^16.6.8",
     "react-dom": "^16.6.8",
-    "shadow-cljs": "^2.8.25",
+    "shadow-cljs": "^2.8.40",
     "showdown": "^1.8.7"
   },
   "author": "",
