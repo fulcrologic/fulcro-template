@@ -10,7 +10,8 @@
     [com.fulcrologic.fulcro-css.css-injection :as cssi]
     [app.model.session :as session]
     [taoensso.timbre :as log]
-    [com.fulcrologic.fulcro.algorithms.denormalize :as fdn]))
+    [com.fulcrologic.fulcro.algorithms.denormalize :as fdn]
+    [com.fulcrologic.fulcro.routing.dynamic-routing :as dr]))
 
 (defn ^:export refresh []
   (log/info "Hot code Remount")
@@ -20,6 +21,7 @@
 (defn ^:export init []
   (log/info "Application starting.")
   (app/mount! SPA root/Root "app")
+  (dr/initialize! SPA)
   (cssi/upsert-css "componentcss" {:component root/Root})
   (log/info "Starting session machine.")
   (uism/begin! SPA session/session-machine ::session/session
