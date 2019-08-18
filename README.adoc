@@ -1,16 +1,6 @@
 == The Project
 
-WARNING: This template is in progress. The README is out of date, and at any given time it might not even be working. This
-is not ready for general consumption yet.
-
-NOTE: The YouTube videos and Developer's Guide are slightly out of date with respect to this template.  This template
-now uses Pathom for server-side mutation and query handling.  See `app/server_components/pathom_wrappers.clj` and
-`app/model/user.clj` for the macro definitions and examples of how to define
-query resolution and mutations on the server-side. The `defmutation` AND `defresolver` in this project look like
-`defn` instead of Fulcro's.
-
-IMPORTANT: This is a Tools Deps Project.  The `project.clj` file is *ONLY* for uberjar generation.  If you're
-opening this project in IntelliJ, open `deps.edn`, NOT `project.clj`.
+NOTE: This template is in progress. It should be working, but is intended to have a lot more features.
 
 Dependency Aliases:
 
@@ -19,58 +9,9 @@ You will want to enable the `:dev` dependency while developing this project.  In
 
 The main project source is in `src/main`.
 
-```
-.
-├── Makefile
-├── README.adoc
-├── deps.edn                     ; IMPORT THIS INTO IntelliJ/Cursive
-├── karma.conf.js
-├── package.json
-├── resources
-│   └── public
-│       ├── favicon.ico
-│       ├── js
-│       │   └── test
-│       │       ├── index.html
-│       │       └── js
-│       └── workspaces
-│           └── index.html
-├── shadow-cljs.edn
-├── src
-│   ├── dev
-│   │   └── user.clj              ; Functions for stopping/starting dev mode server
-│   ├── main
-│   │   ├── app
-│   │   │   ├── client.cljs                ; Main CLJS
-│   │   │   ├── development_preload.cljs   ; Code only loaded during dev time
-│   │   │   ├── model
-│   │   │   │   ├── user.clj               ; client/server mutations/model
-│   │   │   │   └── user.cljs
-│   │   │   ├── server_components          ; Files that make up the server itself
-│   │   │   │   ├── config.clj
-│   │   │   │   ├── http_server.clj
-│   │   │   │   ├── middleware.clj
-│   │   │   │   └── pathom.clj
-│   │   │   ├── server_main.clj            ; Production runtime main
-│   │   │   └── ui
-│   │   │       ├── components.cljs        ; Demo components
-│   │   │       └── root.cljs              ; Demo root UI
-│   │   └── config                         ; server config files. See config docs in Fulcro.
-│   │       ├── defaults.edn
-│   │       ├── dev.edn
-│   │       └── prod.edn
-│   ├── test
-│   │   └── app
-│   │       └── sample_test.cljc
-│   └── workspaces
-│       └── app
-│           └── demo_ws.cljs
-└── tests.edn
-```
-
 == Setting Up
 
-The shadow-cljs compiler uses all cljsjs and NPM js dependencies through
+The shadow-cljs compiler uses all js dependencies through
 NPM. If you use a library that is in cljsjs you will also have to add
 it to your `package.json`.
 
@@ -120,7 +61,7 @@ use the *Builds* menu to enable/disable whichever builds you want watched/runnin
 Shadow-cljs will also start a web server for any builds that configure one. This
 template configures one for workspaces, and one for tests:
 
-- NOT YET PORTED: Workspaces: [http://localhost:8023/workspaces](http://localhost:8023/workspaces)
+- Workspaces: [http://localhost:8023/workspaces](http://localhost:8023/workspaces)
 - Tests: [http://localhost:8022](http://localhost:8022)
 
 See the server section below for working on the full-stack app itself.
@@ -133,10 +74,10 @@ port 9000 (in `shadow-cljs.edn`).
 In IntelliJ: add a *remote* Clojure REPL configuration with
 host `localhost` and port `9000`.
 
-then something like:
+then:
 
 ```
-(shadow/nrepl-select :main)
+(shadow/repl :main)
 ```
 
 will connect you to the REPL for a specific build (NOTE: Make sure you have
@@ -169,14 +110,13 @@ see how your resolvers and mutations are performing.
 The `-J-Dghostwheel.enabled=true` turns on ghostwheel instrumentation of ghostwheel spec'd functions, which is a wrapper
 of Clojure spec that makes instrumentation and production-time elision (for performance and size) much easier.
 
+NOTE: For real development, please use an editor that has REPL integration, like Cursive (recommended) or
+Spacemacs.
+
 The URL to work on your application is then
 [http://localhost:3000](http://localhost:3000).
 
 Hot code reload, preloads, and such are all coded into the javascript.
-
-IMPORTANT: The server comes pre-secured with CSRF protection. If you have
-trouble getting the client to talk to the server make sure you've read
-and understood the security section of the http://book.fulcrologic.com[Developer's Guide].
 
 === Preloads
 
@@ -249,31 +189,15 @@ make
 
 == Workspaces
 
-NOT PORTED YET.
-
 Workspaces is a project by Nubank that is written in Fulcro, and has great support for developing in
 Fulcro. It is similar to devcards but has a more powerful user interface, integration with Fulcro Inspect,
 and much more.
 
 The source directory for making additions to your workspace is `src/workspaces`.
 
-IMPORTANT: Any namespace ending in `-ws` will be auto-detected.
-
-=== Workspaces and CSRF
-
-TODO: Workspaces not ported yet.
-
-The server comes preconfigured with CSRF protection.  As such, a token must be
-embedded in the HTML for a client to be able to connect.  If you want to run
-full-stack Fulcro cards, then you'll need that token.
-
-The middleware included in this template can serve a workspaces HTML page that
-has the correct token. The URI is `/wslive.html`. So, if your server is configured
-for port 3000 you'd access your workspaces via `http://localhost:3000/wslive.html`.
-
-Be careful with production deployment.  You may want to disable this HTML file and
-make sure your workspaces js file isn't deployed to production.
+IMPORTANT: Any namespace ending in `-ws` will be auto-detected and added to your workspace!
 
 == Standalone Runnable Jar (Production, with advanced optimized client js)
 
-TODO: Use tools deps setup to build runnable jar...
+See tools deps projects like Depstar. You'll need to make a release js build, optionally
+pre-compile your CLJ, and package it.  We will likely add a demo of this process soon.
