@@ -1,18 +1,19 @@
 (ns app.ui.root
   (:require
     [app.model.session :as session]
+    [clojure.string :as str]
     [com.fulcrologic.fulcro.dom :as dom :refer [div ul li p h3 button]]
     [com.fulcrologic.fulcro.dom.html-entities :as ent]
     [com.fulcrologic.fulcro.dom.events :as evt]
-    [com.fulcrologic.fulcro.components :as prim :refer [defsc]]
+    [com.fulcrologic.fulcro.application :as app]
+    [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
     [com.fulcrologic.fulcro.routing.dynamic-routing :as dr]
     [com.fulcrologic.fulcro.ui-state-machines :as uism :refer [defstatemachine]]
-    [com.fulcrologic.fulcro.components :as comp]
     [com.fulcrologic.fulcro.mutations :as m :refer [defmutation]]
-    [taoensso.timbre :as log]
+    [com.fulcrologic.fulcro.algorithms.merge :as merge]
     [com.fulcrologic.fulcro-css.css :as css]
     [com.fulcrologic.fulcro.algorithms.form-state :as fs]
-    [clojure.string :as str]))
+    [taoensso.timbre :as log]))
 
 (defn field [{:keys [label valid? error-message] :as props}]
   (let [input-props (-> props (assoc :name label) (dissoc :label :valid? :error-message))]
@@ -49,7 +50,7 @@
                    (when (or (identical? true evt) (evt/enter-key? evt))
                      (comp/transact! this [(session/signup! {:email email :password password})])
                      (log/info "Sign up")))
-        checked? (log/spy :info (fs/checked? props))]
+        checked? (fs/checked? props)]
     (div
       (dom/h3 "Signup")
       (div :.ui.form {:classes [(when checked? "error")]}
@@ -169,7 +170,7 @@
                       data-tree))
    :initial-state {:session/valid? false :account/name ""}})
 
-(def ui-session (prim/factory Session))
+(def ui-session (comp/factory Session))
 
 (defsc TopChrome [this {:root/keys [router current-session login]}]
   {:query         [{:root/router (comp/get-query TopRouter)}
@@ -196,7 +197,7 @@
 (def ui-top-chrome (comp/factory TopChrome))
 
 (defsc Root [this {:root/keys [top-chrome]}]
-  {:query             [{:root/top-chrome (comp/get-query TopChrome)}]
-   :ident             (fn [] [:component/id :ROOT])
-   :initial-state     {:root/top-chrome {}}}
+  {:query         [{:root/top-chrome (comp/get-query TopChrome)}]
+   :ident         (fn [] [:component/id :ROOT])
+   :initial-state {:root/top-chrome {}}}
   (ui-top-chrome top-chrome))

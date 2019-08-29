@@ -16,4 +16,5 @@
 
 (ws/defcard fulcro-demo-card
   (ct.fulcro/fulcro-card
-    {::ct.fulcro/root FulcroDemo}))
+    {::ct.fulcro/root       FulcroDemo
+     ::ct.fulcro/wrap-root? true}))
