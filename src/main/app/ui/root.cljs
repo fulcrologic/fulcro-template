@@ -27,8 +27,7 @@
   {:query         ['*]
    :initial-state {}
    :ident         (fn [] [:component/id :signup-success])
-   :route-segment ["signup-success"]
-   :will-enter    (fn [app _] (dr/route-immediate [:component/id :signup-success]))}
+   :route-segment ["signup-success"]}
   (div
     (dom/h3 "Signup Complete!")
     (dom/p "You can now log in!")))
@@ -44,8 +43,7 @@
    :ident             (fn [] session/signup-ident)
    :route-segment     ["signup"]
    :componentDidMount (fn [this]
-                        (comp/transact! this [(session/clear-signup-form)]))
-   :will-enter        (fn [app _] (dr/route-immediate [:component/id :signup]))}
+                        (comp/transact! this [(session/clear-signup-form)]))}
   (let [submit!  (fn [evt]
                    (when (or (identical? true evt) (evt/enter-key? evt))
                      (comp/transact! this [(session/signup! {:email email :password password})])
@@ -141,8 +139,7 @@
   {:query         [:main/welcome-message]
    :initial-state {:main/welcome-message "Hi!"}
    :ident         (fn [] [:component/id :main])
-   :route-segment ["main"]
-   :will-enter    (fn [_ _] (dr/route-immediate [:component/id :main]))}
+   :route-segment ["main"]}
   (div :.ui.container.segment
     (h3 "Main")))
 
@@ -150,7 +147,6 @@
   {:query         [:account/time-zone :account/real-name]
    :ident         (fn [] [:component/id :settings])
    :route-segment ["settings"]
-   :will-enter    (fn [_ _] (dr/route-immediate [:component/id :settings]))
    :initial-state {}}
   (div :.ui.container.segment
     (h3 "Settings")))

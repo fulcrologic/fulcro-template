@@ -11,7 +11,8 @@
     [app.model.session :as session]
     [taoensso.timbre :as log]
     [com.fulcrologic.fulcro.algorithms.denormalize :as fdn]
-    [com.fulcrologic.fulcro.routing.dynamic-routing :as dr]))
+    [com.fulcrologic.fulcro.routing.dynamic-routing :as dr]
+    [com.fulcrologic.fulcro.inspect.inspect-client :as inspect]))
 
 (defn ^:export refresh []
   (log/info "Hot code Remount")
@@ -21,22 +22,24 @@
 (defn ^:export init []
   (log/info "Application starting.")
   (cssi/upsert-css "componentcss" {:component root/Root})
-  (app/set-root! SPA root/Root)
+  ;(inspect/app-started! SPA)
+  (app/set-root! SPA root/Root {:initialize-state? true})
   (dr/initialize! SPA)
   (log/info "Starting session machine.")
   (uism/begin! SPA session/session-machine ::session/session
     {:actor/login-form      root/Login
      :actor/current-session root/Session})
-  (app/mount! SPA root/Root "app"))
-
+  (app/mount! SPA root/Root "app" {:initialize-state? false}))
 
 (comment
-
+  (inspect/app-started! SPA)
   (app/mounted? SPA)
-  (app/set-root! SPA root/Root)
+  (app/set-root! SPA root/Root {:initialize-state? true})
   (uism/begin! SPA session/session-machine ::session/session
     {:actor/login-form      root/Login
      :actor/current-session root/Session})
+
+  (reset! (::app/state-atom SPA) {})
 
   (merge/merge-component! my-app Settings {:account/time-zone "America/Los_Angeles"
                                            :account/real-name "Joe Schmoe"})
@@ -44,10 +47,8 @@
   (app/current-state SPA)
   (dr/change-route SPA ["settings"])
   (app/mount! SPA root/Root "app")
-  (comp/get-query Root {})
-  (comp/transact! my-app [(twiddle)])
-
-
+  (comp/get-query root/Root {})
+  (comp/get-query root/Root (app/current-state SPA))
 
   (-> SPA ::app/runtime-atom deref ::app/indexes)
   (comp/class->any SPA root/Root)

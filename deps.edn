@@ -6,7 +6,7 @@
            com.taoensso/timbre                 {:mvn/version "4.10.0"}
            com.taoensso/tufte                  {:mvn/version "2.1.0-RC4"}
            com.wsscode/pathom                  {:mvn/version "2.2.15"}
-           com.fulcrologic/fulcro              {:mvn/version "3.0.0-beta-11"}
+           com.fulcrologic/fulcro              {:mvn/version "3.0.0-beta-12"}
            com.fulcrologic/fulcro-garden-css   {:mvn/version "3.0.4"}
            com.fulcrologic/semantic-ui-wrapper {:mvn/version "1.0.0"}
            gnl/ghostwheel                      {:mvn/version "0.3.9"}
@@ -34,5 +34,6 @@
                                      expound                     {:mvn/version "0.7.2"}
                                      fulcrologic/fulcro-spec     {:mvn/version "3.1.4"}
                                      binaryage/devtools          {:mvn/version "0.9.10"}
-                                     nubank/workspaces           {:mvn/version "1.0.11"},
+                                     nubank/workspaces           {:mvn/version "1.0.11"
+                                                                  :exclusions [gnl/ghostwheel.stubs]},
                                      org.clojure/tools.namespace {:mvn/version "0.3.1"}}}}}
