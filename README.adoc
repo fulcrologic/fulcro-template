@@ -30,7 +30,7 @@ $ yarn install
 
 Adding NPM Javascript libraries is as simple as adding them to your
 `package.json` file and requiring them! See the
-[the Shadow-cljs User's Guide](https://shadow-cljs.github.io/docs/UsersGuide.html#_javascript)
+https://shadow-cljs.github.io/docs/UsersGuide.html#_javascript[the Shadow-cljs User's Guide]
 for more information.
 
 == Development Mode
@@ -61,8 +61,8 @@ use the *Builds* menu to enable/disable whichever builds you want watched/runnin
 Shadow-cljs will also start a web server for any builds that configure one. This
 template configures one for workspaces, and one for tests:
 
-- Workspaces: [http://localhost:8023/workspaces](http://localhost:8023/workspaces)
-- Tests: [http://localhost:8022](http://localhost:8022)
+- Workspaces (MUST RUN SERVER): http://localhost:3000/wslive.html
+- Tests: http://localhost:8022
 
 See the server section below for working on the full-stack app itself.
 
@@ -84,7 +84,7 @@ will connect you to the REPL for a specific build (NOTE: Make sure you have
 a browser running the result, or your REPL won't have anything to talk to!)
 
 If you're using CIDER
-see [the Shadow-cljs User's Guide](https://shadow-cljs.github.io/docs/UsersGuide.html#_cider)
+see https://shadow-cljs.github.io/docs/UsersGuide.html#_cider[the Shadow-cljs User's Guide]
 and the comments in `deps.edn` for more information.
 
 === The API Server
