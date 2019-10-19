@@ -114,7 +114,7 @@ NOTE: For real development, please use an editor that has REPL integration, like
 Spacemacs.
 
 The URL to work on your application is then
-[http://localhost:3000](http://localhost:3000).
+http://localhost:3000.
 
 Hot code reload, preloads, and such are all coded into the javascript.
 
