@@ -1,4 +1,11 @@
 == The Project
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
 NOTE: This template is in progress. It should be working, but is intended to have a lot more features.
 
