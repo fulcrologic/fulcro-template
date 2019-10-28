@@ -59,4 +59,5 @@ docs/.jekyll-metadata
 /ReferenceGuide.html
 .cpcache
 .shadow-cljs
-resources/public/workspaces
+resources/public/workspaces/*
+!resources/public/workspaces/index.html
