@@ -11,6 +11,8 @@
     },
     "scripts": {
         "client/main": "npx shadow-cljs watch :main",
+        "client/workspaces": "npx shadow-cljs watch :workspaces",
+        "client/test": "npx shadow-cljs watch :test",
         "client/cljs": "shadow-cljs cljs-repl :main",
         "client/clj": "shadow-cljs clj-repl",
         "client/server": "npx shadow-cljs server",
