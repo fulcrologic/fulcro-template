@@ -9,7 +9,7 @@
            com.fulcrologic/fulcro              {:mvn/version "3.0.3"}
            com.fulcrologic/fulcro-garden-css   {:mvn/version "3.0.6"}
            com.fulcrologic/semantic-ui-wrapper {:mvn/version "1.0.0"}
-           gnl/ghostwheel                      {:mvn/version "0.3.9"}
+           com.fulcrologic/guardrails          {:mvn/version "0.0.7"}
            garden                              {:mvn/version "1.3.9"}
            hiccup                              {:mvn/version "1.0.5"}
            http-kit                            {:mvn/version "2.3.0"}
