@@ -43,7 +43,7 @@ npm run client/test
 npm run client/main
 
 ## Start the backend process:
-clojure -A:dev -Dtrace -Dghostwheel.enabled=true
+clojure -A:dev -Dtrace -Dguardrails.enabled=true
 # The ns is defined in src/dev/user
 ## Start the server
 user=> (start)
@@ -147,7 +147,7 @@ Start a LOCAL clj nREPL in IntelliJ (using IntelliJ's classpath with
 the `dev` alias selected in the Clojure Deps tab), or from the command line:
 
 ```bash
-$ clj -A:dev -J-Dtrace -J-Dghostwheel.enabled=true
+$ clj -A:dev -J-Dtrace -J-Dguardrails.enabled=true
 user=> (start)
 user=> (stop)
 ...
@@ -158,7 +158,7 @@ user=> (tools-ns/refresh) ; retry code reload if hot server reload fails
 The `-J-Dtrace` adds a JVM argument that will enable performance tracing for Fulcro Inspect's network tab so you can
 see how your resolvers and mutations are performing.
 
-The `-J-Dghostwheel.enabled=true` turns on ghostwheel instrumentation of ghostwheel spec'd functions, which is a wrapper
+The `-J-Dguardrails.enabled=true` turns on guardrails instrumentation of guardrails spec'd functions, which is a wrapper
 of Clojure spec that makes instrumentation and production-time elision (for performance and size) much easier.
 
 NOTE: For real development, please use an editor that has REPL integration, like Cursive (recommended) or
