@@ -1,4 +1,11 @@
 == The Project
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
 NOTE: This template is in progress. It should be working, but is intended to have a lot more features.
 
@@ -8,6 +15,50 @@ You will want to enable the `:dev` dependency while developing this project.  In
 "Clojure Deps" border tab window under "Aliases".
 
 The main project source is in `src/main`.
+
+== Quick Start
+This is a manual to get started with this example project.
+It comes with `npm run` scripts pre-loaded, you can find them in the package.json file.
+
+```Shell
+# The shadow-cljs compiler is a dependency.
+yarn install
+# Of course you can use npm if you like.
+
+#### Develop components with cljs ####
+# Workspaces:
+
+npm run client/workspaces
+
+# Visit http://localhost:8023
+# Have a look at src/workspaces and https://github.com/nubank/workspaces
+
+#### Refreshing tests in the browser ####
+# CLJS Tests:
+npm run client/test
+# Visit http://localhost:8022
+
+#### full-stack development ####
+# Start the cljs compiler for the main target
+npm run client/main
+
+## Start the backend process:
+clojure -A:dev -Dtrace -Dghostwheel.enabled=true
+# The ns is defined in src/dev/user
+## Start the server
+user=> (start)
+## After modifications of the backend code:
+user=> (restart)
+## visit http://localhost:3000
+```
+=== The shadow-cljs compile server
+You can find the UI of the compile server here:
+http://localhost:9630
+There you can kick of the compilation of the other targets.
+
+=== Connect to the CLJS nREPL:
+1. Open and connect your nREPL to localhost:9000.
+2. Execute `(shadow/repl :main)`. (you can select another target of course)
 
 == Setting Up
 
