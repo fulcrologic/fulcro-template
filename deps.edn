@@ -6,8 +6,8 @@
            com.taoensso/timbre                 {:mvn/version "4.10.0"}
            com.taoensso/tufte                  {:mvn/version "2.1.0-RC4"}
            com.wsscode/pathom                  {:mvn/version "2.2.26"}
-           com.fulcrologic/fulcro              {:mvn/version "3.0.6"}
-           com.fulcrologic/fulcro-garden-css   {:mvn/version "3.0.6"}
+           com.fulcrologic/fulcro              {:mvn/version "3.0.9"}
+           com.fulcrologic/fulcro-garden-css   {:mvn/version "3.0.7"}
            com.fulcrologic/semantic-ui-wrapper {:mvn/version "1.0.0"}
            com.fulcrologic/guardrails          {:mvn/version "0.0.9"}
            garden                              {:mvn/version "1.3.9"}
