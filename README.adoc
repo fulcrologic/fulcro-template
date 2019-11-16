@@ -43,7 +43,7 @@ npm run client/test
 npm run client/main
 
 ## Start the backend process:
-clojure -A:dev -Dtrace -Dguardrails.enabled=true
+clojure -A:dev -J-Dguardrails.enabled=true
 # The ns is defined in src/dev/user
 ## Start the server
 user=> (start)
