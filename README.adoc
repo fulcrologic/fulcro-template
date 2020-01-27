@@ -21,6 +21,9 @@ This is a manual to get started with this example project.
 It comes with `npm run` scripts pre-loaded, you can find them in the package.json file.
 
 ```Shell
+git clone git@github.com:fulcrologic/fulcro-template.git fulcro-app
+cd fulcro-app
+
 # The shadow-cljs compiler is a dependency.
 yarn install
 # Of course you can use npm if you like.
