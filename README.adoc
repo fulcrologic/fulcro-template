@@ -9,53 +9,48 @@ endif::[]
 
 NOTE: This template is in progress. It should be working, but is intended to have a lot more features.
 
+The template includes a server with a mock database and https://en.wikipedia.org/wiki/Cross-site_request_forgery[CSFR] protection and a client with login. It also integrates https://github.com/nubank/workspaces/[Nubank Workspaces] for a visual, interactive development environment for Fulcro components, which you can choose to use. Both backend Clojure and frontend ClojureScript REPLs are configured and started. There are also sample frontend tests.
+
+The server code leverages https://github.com/tolitius/mount[Mount] to make it easy to start and to reload changes - see the helper functions in link:https://github.com/fulcrologic/fulcro-template/blob/master/src/dev/user.clj[`src/dev/user.clj`]. Client hot code reloading is handled automatically by https://shadow-cljs.org/[shadow-cljs].
+
+The main project source is in `src/main`, the frontend code in `.cljs` files in `+app.*+` and `+app.ui.*+`.
+
 Dependency Aliases:
 
 You will want to enable the `:dev` dependency while developing this project.  In IntelliJ this is in the
 "Clojure Deps" border tab window under "Aliases".
 
-The main project source is in `src/main`.
-
 == Quick Start
 This is a manual to get started with this example project.
-It comes with `npm run` scripts pre-loaded, you can find them in the package.json file.
+It comes with helper `npm run` scripts pre-loaded, you can find them in the package.json file.
+
+Typically you want to start the server and the _main_ and/or _workspaces_ (if you decided to use Nubank Workspaces) client builds. See below. You can simply start everything from the command line
 
 ```Shell
 git clone git@github.com:fulcrologic/fulcro-template.git fulcro-app
 cd fulcro-app
 
 # The shadow-cljs compiler is a dependency.
-yarn install
-# Of course you can use npm if you like.
+yarn install # or: npm install
 
-#### Develop components with cljs ####
-# Workspaces:
-
-npm run client/workspaces
-
-# Visit http://localhost:8023
-# Have a look at src/workspaces and https://github.com/nubank/workspaces
-
-#### Refreshing tests in the browser ####
-# CLJS Tests:
-npm run client/test
-# Visit http://localhost:8022
-
-#### full-stack development ####
-# Start the cljs compiler for the main target
-npm run client/main
-
-## Start the backend process:
-clojure -A:dev -J-Dguardrails.enabled=true
-# The ns is defined in src/dev/user
-## Start the server
+# 1. Start shadow-cljs frontend compilation server:
+npx shadow-cljs server
+# 2.: Visit the shadow-cljs compile server UI at http://localhost:9630
+#     and enable the "main" and optionally "workspaces" builds
+# 3. Start the backend server:
+#    (Note: for proper development you will want to start it in a nREPL-based
+#     REPL, see the detailed instructions for "The API Server" below.)
+clojure -A:dev -J-Dtrace -J-Dghostwheel.enabled=true
 user=> (start)
-## After modifications of the backend code:
-user=> (restart)
-## visit http://localhost:3000
+# after modifications of the backend code run: `(restart)`
+# 4. Visit the application at http://localhost:3000
+
+# (Optional): Visit the Workspaces UI at http://localhost:3000/wslive.html
+# (Optional): Run tests via `npm run client/test` and visit http://localhost:8022
 ```
+
 === The shadow-cljs compile server
-You can find the UI of the compile server here:
+You can find the UI of the frontend compile server here:
 http://localhost:9630
 There you can kick of the compilation of the other targets.
 
@@ -63,7 +58,22 @@ There you can kick of the compilation of the other targets.
 1. Open and connect your nREPL to localhost:9000.
 2. Execute `(shadow/repl :main)`. (you can select another target of course)
 
-== Setting Up
+=== Backend Clojure nREPL:
+The instructions provided above do not start a REPL server for the backend, only a simple
+interactive REPL session. See the <<the-api-server,The API Server>> section below to learn
+how to start the server from a nREPL REPL that you can connect your editor to.
+
+=== Workspaces
+If you choose to use https://github.com/nubank/workspaces[Workspaces], you have two options,
+you can run them with the actual backend as described in the Quick Start above
+or you can run only the frontend part (communication with the backend will fail due to CSFR):
+`npm run client/workspaces` and visit http://localhost:8023
+
+Have a look at `src/workspaces`.
+
+== Detailed instructions
+
+=== Setting Up
 
 The shadow-cljs compiler uses all js dependencies through
 NPM. If you use a library that is in cljsjs you will also have to add
@@ -87,7 +97,7 @@ Adding NPM Javascript libraries is as simple as adding them to your
 https://shadow-cljs.github.io/docs/UsersGuide.html#_javascript[the Shadow-cljs User's Guide]
 for more information.
 
-== Development Mode
+=== Development Mode
 
 Shadow-cljs handles the client-side development build. The file
 `src/main/app/client.cljs` contains the code to start and refresh
@@ -113,14 +123,16 @@ then *navigate to the server URL* (shown in this example as http://localhost:963
 use the *Builds* menu to enable/disable whichever builds you want watched/running.
 
 Shadow-cljs will also start a web server for any builds that configure one. This
-template configures one for workspaces, and one for tests:
+template configures one for workspaces (if running without the Clojure backend is enough for you),
+and one for tests:
 
-- Workspaces (MUST RUN SERVER): http://localhost:3000/wslive.html
+- Workspaces (without backend): http://localhost:8023
+- Workspaces (with the backend; start it first!): http://localhost:3000/wslive.html
 - Tests: http://localhost:8022
 
 See the server section below for working on the full-stack app itself.
 
-=== Client REPL
+==== Client REPL
 
 The shadow-cljs compiler starts an nREPL. It is configured to start on
 port 9000 (in `shadow-cljs.edn`).
@@ -141,13 +153,13 @@ If you're using CIDER
 see https://shadow-cljs.github.io/docs/UsersGuide.html#_cider[the Shadow-cljs User's Guide]
 and the comments in `deps.edn` for more information.
 
-=== The API Server
+==== The API Server
 
 In order to work with your main application you'll want to
 start your own server that can also serve your application's API.
 
-Start a LOCAL clj nREPL in IntelliJ (using IntelliJ's classpath with
-the `dev` alias selected in the Clojure Deps tab), or from the command line:
+Start a https://cursive-ide.com/userguide/repl.html#local-repls[LOCAL clj nREPL in IntelliJ] (using IntelliJ's classpath with
+the `dev` https://cursive-ide.com/userguide/deps.html#working-with-aliases[alias selected in the Clojure Deps tab]), or from the command line:
 
 ```bash
 $ clj -A:dev -J-Dtrace -J-Dguardrails.enabled=true
@@ -172,14 +184,14 @@ http://localhost:3000.
 
 Hot code reload, preloads, and such are all coded into the javascript.
 
-=== Preloads
+==== Preloads
 
 There is a preload file that is used on the development build of the
 application `app.development-preload`. You can add code here that
 you want to execute before the application initializes in development
 mode.
 
-=== Fulcro Inspect
+==== Fulcro Inspect
 
 Fulcro inspect will preload on the development build of the main
 application and workspaces.  You must install the plugin in Chrome from the
