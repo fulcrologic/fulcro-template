@@ -22,7 +22,7 @@ You will want to enable the `:dev` dependency while developing this project.  In
 
 == Quick Start
 This is a manual to get started with this example project.
-It comes with `npm run` scripts pre-loaded, you can find them in the package.json file.
+It comes with helper `npm run` scripts pre-loaded, you can find them in the package.json file.
 
 Typically you want to start the server and the _main_ and/or _workspaces_ (if you decided to use Nubank Workspaces) client builds. See below. You can simply start everything from the command line
 
@@ -33,15 +33,16 @@ cd fulcro-app
 # The shadow-cljs compiler is a dependency.
 yarn install # or: npm install
 
-# 1. Start shadow-cljs server and Clojure REPL:
-npm run start
-# 2. Start the backend server (typing into this terminal where you run `npm run start`):
-#    (Note: for proper development you will want to start it in a nREPL-based REPL, see
-#     the detailed instructions for "The API Server" below.)
+# 1. Start shadow-cljs frontend compilation server:
+npx shadow-cljs server
+# 2.: Visit the shadow-cljs compile server UI at http://localhost:9630
+#     and enable the "main" and optionally "workspaces" builds
+# 3. Start the backend server:
+#    (Note: for proper development you will want to start it in a nREPL-based
+#     REPL, see the detailed instructions for "The API Server" below.)
+clojure -A:dev -J-Dtrace -J-Dghostwheel.enabled=true
 user=> (start)
 # after modifications of the backend code run: `(restart)`
-# 3.: Visit the shadow-cljs compile server UI at http://localhost:9630
-#     and enable the "main" and optionally "workspaces" builds
 # 4. Visit the application at http://localhost:3000
 
 # (Optional): Visit the Workspaces UI at http://localhost:3000/wslive.html
@@ -157,8 +158,8 @@ and the comments in `deps.edn` for more information.
 In order to work with your main application you'll want to
 start your own server that can also serve your application's API.
 
-Start a LOCAL clj nREPL in IntelliJ (using IntelliJ's classpath with
-the `dev` alias selected in the Clojure Deps tab), or from the command line:
+Start a https://cursive-ide.com/userguide/repl.html#local-repls[LOCAL clj nREPL in IntelliJ] (using IntelliJ's classpath with
+the `dev` https://cursive-ide.com/userguide/deps.html#working-with-aliases[alias selected in the Clojure Deps tab]), or from the command line:
 
 ```bash
 $ clj -A:dev -J-Dtrace -J-Dguardrails.enabled=true
