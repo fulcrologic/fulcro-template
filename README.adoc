@@ -9,7 +9,7 @@ endif::[]
 
 NOTE: This template is in progress. It should be working, but is intended to have a lot more features.
 
-The template includes a server with a mock database and https://en.wikipedia.org/wiki/Cross-site_request_forgery[CSFR] protection and a client with login. It also integrates https://github.com/nubank/workspaces/[Nubank Workspaces] for a visual, interactive development environment for Fulcro components, which you can choose to use. Both backend Clojure and frontend ClojureScript REPLs are configured and started. There are also sample frontend tests.
+The template includes a server with a mock database and https://en.wikipedia.org/wiki/Cross-site_request_forgery[CSRF] protection and a client with login. It also integrates https://github.com/nubank/workspaces/[Nubank Workspaces] for a visual, interactive development environment for Fulcro components, which you can choose to use. Both backend Clojure and frontend ClojureScript REPLs are configured and started. There are also sample frontend tests.
 
 The server code leverages https://github.com/tolitius/mount[Mount] to make it easy to start and to reload changes - see the helper functions in link:https://github.com/fulcrologic/fulcro-template/blob/master/src/dev/user.clj[`src/dev/user.clj`]. Client hot code reloading is handled automatically by https://shadow-cljs.org/[shadow-cljs].
 
