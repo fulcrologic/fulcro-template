@@ -27,7 +27,7 @@ It comes with helper `npm run` scripts pre-loaded, you can find them in the pack
 Typically you want to start the server and the _main_ and/or _workspaces_ (if you decided to use Nubank Workspaces) client builds. See below. You can simply start everything from the command line
 
 ```Shell
-git clone git@github.com:fulcrologic/fulcro-template.git fulcro-app
+git clone --depth 1 -o fulcro-template https://github.com/fulcrologic/fulcro-template.git fulcro-app
 cd fulcro-app
 
 # The shadow-cljs compiler is a dependency.
