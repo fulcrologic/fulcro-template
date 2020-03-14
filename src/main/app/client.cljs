@@ -1,6 +1,7 @@
 (ns app.client
   (:require
     [app.application :refer [SPA]]
+    [app.ui.root :as root]
     [com.fulcrologic.fulcro.application :as app]
     [app.ui.root :as root]
     [com.fulcrologic.fulcro.networking.http-remote :as net]
@@ -11,6 +12,7 @@
     [app.model.session :as session]
     [taoensso.timbre :as log]
     [com.fulcrologic.fulcro.algorithms.denormalize :as fdn]
+    [com.fulcrologic.fulcro.algorithms.merge :as merge]
     [com.fulcrologic.fulcro.routing.dynamic-routing :as dr]
     [com.fulcrologic.fulcro.inspect.inspect-client :as inspect]))
 
@@ -41,8 +43,8 @@
 
   (reset! (::app/state-atom SPA) {})
 
-  (merge/merge-component! my-app Settings {:account/time-zone "America/Los_Angeles"
-                                           :account/real-name "Joe Schmoe"})
+  (merge/merge-component! SPA root/Settings {:account/time-zone "America/Los_Angeles"
+                                             :account/real-name "Joe Schmoe"})
   (dr/initialize! SPA)
   (app/current-state SPA)
   (dr/change-route SPA ["settings"])
