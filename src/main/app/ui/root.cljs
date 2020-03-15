@@ -2,7 +2,7 @@
   (:require
     [app.model.session :as session]
     [clojure.string :as str]
-    [com.fulcrologic.fulcro.dom :as dom :refer [div ul li p h3 button]]
+    [com.fulcrologic.fulcro.dom :as dom :refer [div ul li p h3 button b]]
     [com.fulcrologic.fulcro.dom.html-entities :as ent]
     [com.fulcrologic.fulcro.dom.events :as evt]
     [com.fulcrologic.fulcro.application :as app]
@@ -149,7 +149,10 @@
    :route-segment ["settings"]
    :initial-state {}}
   (div :.ui.container.segment
-    (h3 "Settings")))
+       (h3 "Settings")
+       (div
+        (p (b "Name: ") real-name)
+        (p (b "Time Zone: ") time-zone))))
 
 (dr/defrouter TopRouter [this props]
   {:router-targets [Main Signup SignupSuccess Settings]})
