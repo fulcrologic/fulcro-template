@@ -2,6 +2,7 @@
   (:require
     [app.server-components.config :refer [config]]
     [app.server-components.pathom :refer [parser]]
+    [app.server-components.websockets :refer [wrap-websockets]]
     [mount.core :refer [defstate]]
     [com.fulcrologic.fulcro.server.api-middleware :refer [handle-api-request
                                                           wrap-transit-params
@@ -90,6 +91,7 @@
         legal-origins   (get config :legal-origins #{"localhost"})]
     (-> not-found-handler
       (wrap-api "/api")
+      (wrap-websockets)
       wrap-transit-params
       wrap-transit-response
       (wrap-html-routes)

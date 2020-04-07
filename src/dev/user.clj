@@ -8,6 +8,9 @@
     [app.server-components.http-server :refer [http-server]]))
 
 ;; ==================== SERVER ====================
+;; Ensure we only refresh the source we care about. This is important
+;; because `resources` is on our classpath and we don't want to
+;; accidentally pull source from there when cljs builds cache files there.
 (set-refresh-dirs "src/main" "src/dev" "src/test")
 ;; Change the default output of spec to be more readable
 (alter-var-root #'s/*explain-out* (constantly expound/printer))
@@ -32,3 +35,14 @@
   (stop)
   (tools-ns/refresh :after 'user/start))
 
+
+;; These are here so we can run them from the editor with kb shortcuts.  See IntelliJ's "Send Top Form To REPL" in
+;; keymap settings.
+(comment
+  (start)
+  (restart))
+
+
+;; ==================== CLIENT ====================
+(comment
+  (require '[shadow.cljs.devtools.api :as shadow]))

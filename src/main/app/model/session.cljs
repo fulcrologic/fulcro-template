@@ -27,7 +27,8 @@
        :password          (:password event-data)
        ::m/returning      (uism/actor-class env :actor/current-session)
        ::uism/ok-event    :event/complete
-       ::uism/error-event :event/failed})
+       ::uism/error-event :event/failed
+       ::uism/mutation-remote :ws-remote})
     (uism/activate :state/checking-session)))
 
 (defn process-session-result [env error-message]
@@ -116,7 +117,7 @@
     (swap! state fs/mark-complete* signup-ident))
   (ok-action [{:keys [app state]}]
     (dr/change-route app ["signup-success"]))
-  (remote [{:keys [state] :as env}]
+  (ws-remote [{:keys [state] :as env}]
     (let [{:account/keys [email password password-again]} (get-in @state signup-ident)]
       (boolean (and (valid-email? email) (valid-password? password)
                  (= password password-again))))))
