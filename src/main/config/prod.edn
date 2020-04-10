@@ -8,5 +8,4 @@
  :ring.middleware/defaults-config
                                  {:proxy    false
                                   :security {:ssl-redirect false}}
- :database-spec {:jdbc-url :env/DATABASE_URL
-                 :use-ssl  true}}
+ :database-spec {:jdbc-url :env/DATABASE_URL}}
