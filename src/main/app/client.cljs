@@ -16,12 +16,17 @@
     [com.fulcrologic.fulcro.routing.dynamic-routing :as dr]
     [com.fulcrologic.fulcro.inspect.inspect-client :as inspect]))
 
-(defn ^:export refresh []
+(defn ^:export refresh
+  "During development, shadow-cljs will call this on every hot reload of source. See shadow-cljs.edn"
+  []
   (log/info "Hot code Remount")
   (cssi/upsert-css "componentcss" {:component root/Root})
+  ;; re-mounting will cause forced UI refresh, update internals, etc.
   (app/mount! SPA root/Root "app"))
 
-(defn ^:export init []
+(defn ^:export init
+  "Shadow-cljs sets this up to be our entry-point function. See shadow-cljs.edn `:init-fn` in the modules of the main build."
+  []
   (log/info "Application starting.")
   (cssi/upsert-css "componentcss" {:component root/Root})
   ;(inspect/app-started! SPA)

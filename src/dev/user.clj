@@ -15,6 +15,7 @@
 ;; Change the default output of spec to be more readable
 (alter-var-root #'s/*explain-out* (constantly expound/printer))
 
+
 (defn start
   "Start the web server"
   [] (mount/start))
@@ -45,4 +46,5 @@
 
 ;; ==================== CLIENT ====================
 (comment
-  (require '[shadow.cljs.devtools.api :as shadow]))
+  (require '[shadow.cljs.devtools.api :as shadow])
+  (shadow/repl :main))

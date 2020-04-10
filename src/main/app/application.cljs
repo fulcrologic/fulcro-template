@@ -10,6 +10,7 @@
     (net/wrap-csrf-token (or js/fulcro_network_csrf_token "TOKEN-NOT-IN-HTML!"))
     (net/wrap-fulcro-request)))
 
+;; TODO: Sort out websockets csrf
 (def secured-request-ws-params
   ;; The CSRF token is embedded via server_components/html.clj
   {:csrf-token (or js/fulcro_network_csrf_token "TOKEN-NOT-IN-HTML!")})
