@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+clojure -A:depstar -m hf.depstar.uberjar fulcro.jar
+npm install
+npx shadow-cljs release main
+

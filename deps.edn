@@ -45,4 +45,5 @@
                                      fulcrologic/fulcro-spec     {:mvn/version "3.1.5"}
                                      binaryage/devtools          {:mvn/version "1.0.0"}
                                      com.github.awkay/workspaces {:mvn/version "1.0.0-RC2"},
-                                     org.clojure/tools.namespace {:mvn/version "1.0.0"}}}}}
+                                     org.clojure/tools.namespace {:mvn/version "1.0.0"}}}
+           :depstar    {:extra-deps {seancorfield/depstar        {:mvn/version "0.5.2"}}}}}
