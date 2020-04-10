@@ -7,4 +7,10 @@
  ;; You probably want these set to true in real production:
  :ring.middleware/defaults-config
                                  {:proxy    false
-                                  :security {:ssl-redirect false}}}
+                                  :security {:ssl-redirect false}}
+ :database-spec {:username      :env/POSTGRES_USER
+                 :password      :env/POSTGRES_PASSWORD
+                 :server-name   :env/POSTGRES_HOSTNAME
+                 :port-number   :env.edn/POSTGRES_PORT
+                 :database-name :env/POSTGRES_DB
+                 :sslmode       :env/POSTGRES_SSLMODE}}

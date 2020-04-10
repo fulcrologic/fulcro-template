@@ -1,1 +1,7 @@
-{:taoensso.timbre/logging-config {:level :debug}}
+{:taoensso.timbre/logging-config {:level :debug}
+ :database-spec {:username      "postgres"
+                 :password      "password"
+                 :server-name   "localhost"
+                 :port-number   5432
+                 :database-name "postgres"
+                 :sslmode       "disable"}}

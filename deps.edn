@@ -21,7 +21,15 @@
            datascript                          {:mvn/version "0.18.7"}
 
            ring/ring-core                      {:mvn/version "1.8.0"}
-           ring/ring-defaults                  {:mvn/version "0.3.2"}}
+           ring/ring-defaults                  {:mvn/version "0.3.2"}
+           seancorfield/next.jdbc              {:mvn/version "1.0.409"}
+           honeysql                            {:mvn/version "0.9.10"}
+           nilenso/honeysql-postgres           {:mvn/version "0.2.6"}
+           org.postgresql/postgresql           {:mvn/version "42.2.12"}
+           hikari-cp                           {:mvn/version "2.11.0"}
+           buddy/buddy-sign                    {:mvn/version "3.1.0"}
+           buddy/buddy-hashers                 {:mvn/version "1.4.0"}}
+
 
  :aliases {:clj-tests {:extra-paths ["src/test"]
                        :main-opts   ["-m" "kaocha.runner"]

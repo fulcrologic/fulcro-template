@@ -1,11 +1,12 @@
 (ns app.model.session
   (:require
-    [app.model.mock-database :as db]
+    [app.model.database :as db]
     [datascript.core :as d]
     [com.fulcrologic.guardrails.core :refer [>defn => | ?]]
     [com.wsscode.pathom.connect :as pc :refer [defresolver defmutation]]
     [taoensso.timbre :as log]
     [clojure.spec.alpha :as s]
+    [buddy.hashers :as hs]
     [com.fulcrologic.fulcro.server.api-middleware :as fmw]))
 
 (defonce account-database (atom {}))
@@ -29,12 +30,16 @@
         (let [new-session (merge existing-session mutation-response)]
           (assoc resp :session new-session))))))
 
-(defmutation login [env {:keys [username password]}]
+(defmutation login [{::db/keys [pool] :as env} {:keys [username password]}]
   {::pc/output [:session/valid? :account/name]}
   (log/info "Authenticating" username)
-  (let [{expected-email    :email
-         expected-password :password} (get @account-database username)]
-    (if (and (= username expected-email) (= password expected-password))
+  (let [user (db/execute-one! pool
+                              {:select [:email :password]
+                               :from   [:account]
+                               :where  [:= :email username]})
+        {expected-email    :account/email
+         expected-password :account/password} user]
+    (if (and (= username expected-email) (hs/check password expected-password))
       (response-updating-session env
         {:session/valid? true
          :account/name   username})
@@ -46,10 +51,15 @@
   {::pc/output [:session/valid?]}
   (response-updating-session env {:session/valid? false :account/name ""}))
 
-(defmutation signup! [env {:keys [email password]}]
+(defmutation signup! [{::db/keys [pool] :as env} {:keys [email password]}]
   {::pc/output [:signup/result]}
-  (swap! account-database assoc email {:email    email
-                                       :password password})
-  {:signup/result "OK"})
+  (log/info "Signing Up" email)
+  (let [hashed-password (hs/derive password)]
+    (db/execute-one! pool
+                     {:insert-into :account
+                      :values [{:email email
+                                :password hashed-password}]
+                      :returning [:id]})
+    {:signup/result "OK"}))
 
 (def resolvers [current-session-resolver login logout signup!])

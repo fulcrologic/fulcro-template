@@ -9,7 +9,8 @@
     [app.model.account :as acct]
     [app.model.session :as session]
     [app.server-components.config :refer [config]]
-    [app.model.mock-database :as db]))
+    [app.model.mock-database :as db]
+    [app.model.database :as pgdb]))
 
 (pc/defresolver index-explorer [env _]
   {::pc/input  #{:com.wsscode.pathom.viz.index-explorer/id}
@@ -51,6 +52,7 @@
                                                          ;; Here is where you can dynamically add things to the resolver/mutation
                                                          ;; environment, like the server config, database connections, etc.
                                                          (assoc env
+                                                           ::pgdb/pool pgdb/pool
                                                            :db @db-connection ; real datomic would use (d/db db-connection)
                                                            :connection db-connection
                                                            :config config)))
