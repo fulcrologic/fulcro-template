@@ -9,4 +9,4 @@
                                  {:proxy    false
                                   :security {:ssl-redirect false}}
  :database-spec {:jdbc-url :env/DATABASE_URL
-                 :ssl      true}}
+                 :use-ssl  true}}
