@@ -3,6 +3,7 @@
     [app.server-components.config :refer [config]]
     [app.server-components.pathom :refer [parser]]
     [app.server-components.websockets :refer [wrap-websockets]]
+    [app.server-components.session :refer [mem-store]]
     [mount.core :refer [defstate]]
     [com.fulcrologic.fulcro.server.api-middleware :refer [handle-api-request
                                                           wrap-transit-params
@@ -99,5 +100,5 @@
       ;; the defaults-config here (which comes from an EDN file, so it can't have
       ;; code initialized).
       ;; E.g. (wrap-defaults (assoc-in defaults-config [:session :store] (my-store)))
-      (wrap-defaults defaults-config)
+      (wrap-defaults (assoc-in defaults-config [:session :store] mem-store))
       wrap-gzip)))
