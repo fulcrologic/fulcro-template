@@ -4,8 +4,7 @@
                        :output-dir "resources/public/js/main"
                        :asset-path "/js/main"
 
-                       :modules    {:main {:init-fn app.client/init
-                                           :entries [app.client]}}
+                       :modules    {:main {:init-fn app.client/init}}
                        ;; guardrails checks only during dev
                        :dev        {:compiler-options
                                     {:external-config {:guardrails {}}}}
@@ -18,14 +17,15 @@
                        :ns-regexp        "-test$"
                        ;; static required for mocking to work
                        :compiler-options {:static-fns      false
-                                          :external-config {:guardrails {}}}
+                                          :external-config {:guardrails {:throw? true}}}
                        :devtools         {:http-port          8022
                                           :http-resource-root "public"
                                           :http-root          "resources/public/js/test"}}
 
           :ci-tests   {:target           :karma
                        :js-options       {:js-provider :shadow}
-                       :compiler-options {:static-fns false} ; required for mocking to work
+                       :compiler-options {:static-fns      false
+                                          :external-config {:guardrails {:throw? true}}}
                        :output-to        "target/ci.js"
                        :ns-regexp        "-test$"}
 

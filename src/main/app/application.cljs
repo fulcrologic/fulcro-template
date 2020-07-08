@@ -1,7 +1,8 @@
 (ns app.application
-  (:require [com.fulcrologic.fulcro.networking.http-remote :as net]
-            [com.fulcrologic.fulcro.application :as app]
-            [com.fulcrologic.fulcro.components :as comp]))
+  (:require
+    [com.fulcrologic.fulcro.networking.http-remote :as net]
+    [com.fulcrologic.fulcro.application :as app]
+    [com.fulcrologic.fulcro.components :as comp]))
 
 (def secured-request-middleware
   ;; The CSRF token is embedded via server_components/html.clj

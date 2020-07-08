@@ -4,35 +4,35 @@
            bidi                                {:mvn/version "2.1.6"}
            bk/ring-gzip                        {:mvn/version "0.3.0"}
            com.taoensso/timbre                 {:mvn/version "4.10.0"}
-           com.taoensso/tufte                  {:mvn/version "2.1.0-RC4"}
-           com.wsscode/pathom                  {:mvn/version "2.2.26"}
-           com.fulcrologic/fulcro              {:mvn/version "3.0.9"}
+           com.taoensso/tufte                  {:mvn/version "2.1.0"}
+           com.wsscode/pathom                  {:mvn/version "2.2.31"}
+           com.fulcrologic/fulcro              {:mvn/version "3.2.11"}
            com.fulcrologic/fulcro-garden-css   {:mvn/version "3.0.7"}
-           com.fulcrologic/semantic-ui-wrapper {:mvn/version "1.0.0"}
-           com.fulcrologic/guardrails          {:mvn/version "0.0.9"}
+           com.fulcrologic/semantic-ui-wrapper {:mvn/version "1.0.1"}
+           com.fulcrologic/guardrails          {:mvn/version "0.0.12"}
            garden                              {:mvn/version "1.3.9"}
            hiccup                              {:mvn/version "1.0.5"}
            http-kit                            {:mvn/version "2.3.0"}
            mount                               {:mvn/version "0.1.12"}
-           org.clojure/core.async              {:mvn/version "0.4.500"}
+           org.clojure/core.async              {:mvn/version "1.2.603"}
 
            ;; To simulate Datomic on the back-end
-           datascript                          {:mvn/version "0.18.4"}
+           datascript                          {:mvn/version "0.18.7"}
 
-           ring/ring-core                      {:mvn/version "1.7.1"}
+           ring/ring-core                      {:mvn/version "1.8.1"}
            ring/ring-defaults                  {:mvn/version "0.3.2"}}
 
  :aliases {:clj-tests {:extra-paths ["src/test"]
                        :main-opts   ["-m" "kaocha.runner"]
-                       :extra-deps  {lambdaisland/kaocha {:mvn/version "0.0-529"}}}
+                       :extra-deps  {lambdaisland/kaocha {:mvn/version "1.0.632"}}}
 
            ;; See https://github.com/clojure-emacs/cider-nrepl/blob/master/deps.edn for Emacs support
            :dev       {:extra-paths ["src/test" "src/dev" "src/workspaces"]
                        :jvm-opts    ["-XX:-OmitStackTraceInFastThrow"]
-                       :extra-deps  {org.clojure/clojurescript   {:mvn/version "1.10.520"}
-                                     thheller/shadow-cljs        {:mvn/version "2.8.58"}
-                                     expound                     {:mvn/version "0.7.2"}
+                       :extra-deps  {org.clojure/clojurescript   {:mvn/version "1.10.773"}
+                                     thheller/shadow-cljs        {:mvn/version "2.10.14"}
+                                     expound                     {:mvn/version "0.8.4"}
                                      fulcrologic/fulcro-spec     {:mvn/version "3.1.4"}
-                                     binaryage/devtools          {:mvn/version "0.9.10"}
-                                     com.github.awkay/workspaces {:mvn/version "1.0.0-RC2"},
-                                     org.clojure/tools.namespace {:mvn/version "0.3.1"}}}}}
+                                     binaryage/devtools          {:mvn/version "1.0.0"}
+                                     com.github.awkay/workspaces {:mvn/version "1.0.1"},
+                                     org.clojure/tools.namespace {:mvn/version "1.0.0"}}}}}
