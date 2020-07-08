@@ -3,8 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "private": true,
-    "dependencies": {
-    },
+    "dependencies": {},
     "scripts": {
         "client/main": "npx shadow-cljs watch :main",
         "client/workspaces": "npx shadow-cljs watch :workspaces",
