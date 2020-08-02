@@ -32,7 +32,7 @@
           :workspaces {:target     nubank.workspaces.shadow-cljs.target
                        :ns-regexp  "-(test|ws)$"
                        :output-dir "resources/public/workspaces/js"
-                       :asset-path "/workspaces/js"
+                       :asset-path "js"
                        :devtools   {:preloads           [com.fulcrologic.fulcro.inspect.preload]
                                     :http-root          "resources/public/workspaces"
                                     :http-port          8023
