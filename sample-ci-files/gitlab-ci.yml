@@ -1,0 +1,23 @@
+cache:
+  key: one-key-to-rule-them-all
+  paths:
+    - node_modules/
+    - google-chrome-stable_current_amd64.deb
+
+default:
+  image: clojure:openjdk-8-tools-deps
+  before_script:
+    - apt-get update
+
+clj:
+  script:
+    - clojure -A:dev:clj-tests
+
+cljs:
+  script:
+    - apt-get install -y nodejs npm wget
+    - ls google-chrome-stable_current_amd64.deb || wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+    - apt install -y ./google-chrome-stable_current_amd64.deb
+    - npm install
+    - npx shadow-cljs compile ci-tests
+    - npx karma start --single-run
