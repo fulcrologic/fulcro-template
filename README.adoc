@@ -18,7 +18,7 @@ visual, interactive development environment for Fulcro components, which you can
 Both backend Clojure and frontend ClojureScript REPLs are configured and started. There are also sample frontend tests.
 
 The server code leverages https://github.com/tolitius/mount[Mount] to make it easy to start and to reload changes - see
-the helper functions in link:https://github.com/fulcrologic/fulcro-template/blob/master/src/dev/user.clj[`src/dev/user.clj`].
+the helper functions in link:https://github.com/fulcrologic/fulcro-template/blob/master/src/dev/development.clj[`src/dev/development.clj`].
 Client hot code reloading is handled automatically by https://shadow-cljs.org/[shadow-cljs].
 
 The main project source is in `src/main`, the frontend code in `.cljs` files in `+app.*+` and `+app.ui.*+`.
@@ -49,8 +49,10 @@ npx shadow-cljs server
 # 3. Start the backend server:
 #    (Note: for proper development you will want to start it in a nREPL-based
 #     REPL, see the detailed instructions for "The API Server" below.)
-clojure -A:dev -J-Dtrace -J-Dghostwheel.enabled=true
-user=> (start)
+clj -A:dev -J-Dtrace -J-Dghostwheel.enabled=true
+user=> (require 'development)
+user=> (in-ns 'development)
+development=> (start)
 # after modifications of the backend code run: `(restart)`
 # 4. Visit the application at http://localhost:3000
 
@@ -176,11 +178,13 @@ the `dev` https://cursive-ide.com/userguide/deps.html#working-with-aliases[alias
 
 ```bash
 $ clj -A:dev -J-Dtrace -J-Dguardrails.enabled=true
-user=> (start)
-user=> (stop)
+user=> (require 'development)
+development=> (in-ns 'development)
+development=> (start)
+development=> (stop)
 ...
-user=> (restart) ; stop, reload server code, and go again
-user=> (tools-ns/refresh) ; retry code reload if hot server reload fails
+development=> (restart) ; stop, reload server code, and go again
+development=> (tools-ns/refresh) ; retry code reload if hot server reload fails
 ```
 
 The `-J-Dtrace` adds a JVM argument that will enable performance tracing for Fulcro Inspect's network tab so you can

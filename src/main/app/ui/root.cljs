@@ -141,18 +141,20 @@
    :ident         (fn [] [:component/id :main])
    :route-segment ["main"]}
   (div :.ui.container.segment
-    (h3 "Main")))
+    (h3 "Main")
+    (p (str "Welcome to the Fulcro template. "
+         "The Sign up and login functionalities are partially implemented, "
+         "but mostly this is just a blank slate waiting "
+         "for your project."))))
 
 (defsc Settings [this {:keys [:account/time-zone :account/real-name] :as props}]
-  {:query         [:account/time-zone :account/real-name]
+  {:query         [:account/time-zone :account/real-name :account/crap]
    :ident         (fn [] [:component/id :settings])
    :route-segment ["settings"]
    :initial-state {}}
   (div :.ui.container.segment
-       (h3 "Settings")
-       (div
-        (p (b "Name: ") real-name)
-        (p (b "Time Zone: ") time-zone))))
+    (h3 "Settings")
+    (div "TODO")))
 
 (dr/defrouter TopRouter [this props]
   {:router-targets [Main Signup SignupSuccess Settings]})

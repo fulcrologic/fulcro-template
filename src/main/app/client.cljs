@@ -43,6 +43,11 @@
 
   (reset! (::app/state-atom SPA) {})
 
+  (comp/get-query root/Settings (app/current-state SPA))
+
+  (tap> SPA)
+  (com.fulcrologic.fulcro.algorithms.indexing/reindex)
+
   (merge/merge-component! SPA root/Settings {:account/time-zone "America/Los_Angeles"
                                              :account/real-name "Joe Schmoe"})
   (dr/initialize! SPA)

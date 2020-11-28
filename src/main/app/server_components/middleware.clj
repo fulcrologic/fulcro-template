@@ -7,7 +7,6 @@
                                                           wrap-transit-params
                                                           wrap-transit-response]]
     [ring.middleware.defaults :refer [wrap-defaults]]
-    [ring.middleware.gzip :refer [wrap-gzip]]
     [ring.util.response :refer [response file-response resource-response]]
     [ring.util.response :as resp]
     [hiccup.page :refer [html5]]
@@ -97,5 +96,4 @@
       ;; the defaults-config here (which comes from an EDN file, so it can't have
       ;; code initialized).
       ;; E.g. (wrap-defaults (assoc-in defaults-config [:session :store] (my-store)))
-      (wrap-defaults defaults-config)
-      wrap-gzip)))
+      (wrap-defaults defaults-config))))

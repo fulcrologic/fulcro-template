@@ -2,33 +2,20 @@
   (:require
     [clojure.tools.namespace.repl :as tools-ns :refer [set-refresh-dirs]]
     [expound.alpha :as expound]
-    [clojure.spec.alpha :as s]
-    [mount.core :as mount]
-    ;; this is the top-level dependent component...mount will find the rest via ns requires
-    [app.server-components.http-server :refer [http-server]]))
+    [clojure.spec.alpha :as s]))
 
-;; ==================== SERVER ====================
 (set-refresh-dirs "src/main" "src/dev" "src/test")
-;; Change the default output of spec to be more readable
 (alter-var-root #'s/*explain-out* (constantly expound/printer))
 
-(defn start
-  "Start the web server"
-  [] (mount/start))
+;; NOTE: To start working with server: Require development.clj, and use start there.
+;; This leads to faster and more reliable REPL startup
+;; in cases where your app is busted.
 
-(defn stop
-  "Stop the web server"
-  [] (mount/stop))
+;; If using IntelliJ, Use actions to "Add new REPL command", and add this (dropping the comment around it),
+;; then add a keyboard shortcut to it. Then you can start your server quickly once the REPL is going:
 
-(defn restart
-  "Stop, reload code, and restart the server. If there is a compile error, use:
-
-  ```
-  (tools-ns/refresh)
-  ```
-
-  to recompile, and then use `start` once things are good."
-  []
-  (stop)
-  (tools-ns/refresh :after 'user/start))
-
+(comment
+  (require 'development)
+  (in-ns 'development)
+  (restart)
+  )
