@@ -16,7 +16,7 @@
         "start": "npx run-p client/server server"
     },
     "devDependencies": {
-        "highlight.js": "^9.13.1",
+        "highlight.js": "^10.4.1",
         "react-grid-layout": "^0.16.6",
         "react-icons": "^2.2.7",
         "reakit": "^0.11.2",
