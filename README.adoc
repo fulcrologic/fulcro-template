@@ -7,10 +7,26 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-NOTE: There is a https://github.com/fulcrologic/fulcro-rad-demo[Fulcro RAD demo] that is perhaps a better starting point for
-a project. RAD gives you a lot of leverage for a new project, and is really just some pre-written patterns written *in* Fulcro.
+== Status
+
+This is an official template for a Fulcro starter project that might go on to become a production application. It includes a number 
+of features that a beginner *will not* need for just playing with the library (full CI test setup, workspaces), but is simple 
+enough that a beginner should have no real problem using it.
+
+Beginners should therefore either use this template, or just generate simple play projects from the instructions in
+the https://book.fulcrologic.com[Developer's Guide].
+
+Fulcro also has a Rapid Application Development add-on that makes building a production application faster and easier; 
+however, a *beginner* should *not* start with RAD except to satisfy surface-level curiosity. RAD requires that you understand
+the core library (even though most of it uses convention and configuration over actual code). If you understand Fulcro and are
+working on a real production application then you should probably consider using the setup from the
+https://github.com/fulcrologic/fulcro-rad-demo[Fulcro RAD demo] as starting point instead of this template. 
+
+RAD gives you a lot of leverage for a new project, and includes a number of pre-written patterns written *in* Fulcro.
 It includes very good HTML5 routing, form/report support. It *does not limit* your options, just expands what you have available
 by default.
+
+== About This Template
 
 This template includes a server with a mock database and https://en.wikipedia.org/wiki/Cross-site_request_forgery[CSRF]
 protection and a client with login. It also integrates https://github.com/nubank/workspaces/[Nubank Workspaces] for a
