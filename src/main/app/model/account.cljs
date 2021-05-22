@@ -2,7 +2,6 @@
   (:require
     [taoensso.timbre :as log]
     [com.fulcrologic.fulcro.mutations :as m :refer [defmutation]]
-    [com.fulcrologic.fulcro.algorithms.merge :as merge]
     [com.fulcrologic.fulcro.algorithms.data-targeting :as targeting]))
 
 (defn user-path
@@ -23,7 +22,7 @@
     (swap! state (fn [s]
                    (-> s
                      (insert-user* params)
-                     (merge/integrate-ident* [:account/id id] :append [:all-accounts])))))
+                     (targeting/integrate-ident* [:account/id id] :append [:all-accounts])))))
   (ok-action [env]
     (log/info "OK action"))
   (error-action [env]
