@@ -12,7 +12,7 @@
         "client/clj": "shadow-cljs clj-repl",
         "client/server": "npx shadow-cljs server",
         "client/nodejs": "npx shadow-cljs node-repl",
-        "server": "clojure -A:dev -J-Dtrace -J-Dghostwheel.enabled=true",
+        "server": "clojure -A:dev -J-Dtrace -J-Dguardrails.enabled=true",
         "start": "npx run-p client/server server"
     },
     "devDependencies": {

@@ -65,7 +65,7 @@ npx shadow-cljs server
 # 3. Start the backend server:
 #    (Note: for proper development you will want to start it in a nREPL-based
 #     REPL, see the detailed instructions for "The API Server" below.)
-clj -A:dev -J-Dtrace -J-Dghostwheel.enabled=true
+clj -A:dev -J-Dtrace -J-Dguardrails.enabled=true
 user=> (require 'development)
 user=> (in-ns 'development)
 development=> (start)
