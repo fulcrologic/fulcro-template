@@ -80,7 +80,7 @@ development=> (start)
 
 You can find the UI of the frontend compile server here:
 http://localhost:9630
-There you can kick of the compilation of the other targets.
+There you can kick off the compilation of the other targets.
 
 === Connect to the CLJS nREPL:
 
