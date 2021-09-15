@@ -4,7 +4,7 @@
            bidi/bidi                           {:mvn/version "2.1.6"}
            com.taoensso/timbre                 {:mvn/version "5.0.0"}
            com.wsscode/pathom                  {:mvn/version "2.2.31"}
-           com.fulcrologic/fulcro              {:mvn/version "3.4.4"}
+           com.fulcrologic/fulcro              {:mvn/version "3.5.5"}
            com.fulcrologic/fulcro-garden-css   {:mvn/version "3.0.8"}
            com.fulcrologic/semantic-ui-wrapper {:mvn/version "1.0.1"}
            com.fulcrologic/guardrails          {:mvn/version "0.0.12"}
