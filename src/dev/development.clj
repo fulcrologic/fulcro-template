@@ -25,3 +25,6 @@
   (stop)
   (tools-ns/refresh :after 'development/start))
 
+(comment
+  (start)
+  (restart))

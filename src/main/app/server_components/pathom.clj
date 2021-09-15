@@ -45,7 +45,8 @@
                       {::p/mutate  pc/mutate-async
                        ::p/env     {::p/reader               [p/map-reader pc/parallel-reader
                                                               pc/open-ident-reader p/env-placeholder-reader]
-                                    ::p/placeholder-prefixes #{">"}}
+                                    ::p/placeholder-prefixes #{">"}
+                                    ::pc/mutation-join-globals [:tempids]}
                        ::p/plugins [(pc/connect-plugin {::pc/register all-resolvers})
                                     (p/env-wrap-plugin (fn [env]
                                                          ;; Here is where you can dynamically add things to the resolver/mutation
