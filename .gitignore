@@ -60,3 +60,6 @@ docs/.jekyll-metadata
 .shadow-cljs
 resources/public/workspaces/*
 !resources/public/workspaces/index.html
+.calva/
+.lsp/.cache/
+.clj-kondo/.cache/
