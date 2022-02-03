@@ -114,12 +114,6 @@ You also cannot compile this project until you install the ones it
 depends on already:
 
 ```
-$ npm install
-```
-
-or if you prefer `yarn`:
-
-```
 $ yarn install
 ```
 
