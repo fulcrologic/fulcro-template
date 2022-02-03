@@ -56,7 +56,7 @@ git clone --depth 1 -o fulcro-template https://github.com/fulcrologic/fulcro-tem
 cd fulcro-app
 
 # The shadow-cljs compiler is a dependency.
-yarn install # or: npm install
+yarn install
 
 # 1. Start shadow-cljs frontend compilation server:
 npx shadow-cljs server
