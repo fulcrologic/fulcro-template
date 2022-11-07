@@ -14,6 +14,20 @@
 ;; If using IntelliJ, Use actions to "Add new REPL command", and add this (dropping the comment around it),
 ;; then add a keyboard shortcut to it. Then you can start your server quickly once the REPL is going:
 
+;; If using emacs, copy this snippet into a .dir-locals.el file at project root:
+;;  (
+;;    (nil . 
+;;      ((eval . (progn
+;;                  (local-set-key (kbd "C-c C-r")
+;;                    (lambda () 
+;;                      (interactive)
+;;                      (cider-interactive-eval
+;;                        "(require 'development) (in-ns 'development) (restart)"
+;;                        nil 
+;;                        nil 
+;;                        (cider--nrepl-pr-request-map)))))))))
+;; 
+
 (comment
   (require 'development)
   (in-ns 'development)
