@@ -34,7 +34,7 @@ visual, interactive development environment for Fulcro components, which you can
 Both backend Clojure and frontend ClojureScript REPLs are configured and started. There are also sample frontend tests.
 
 The server code leverages https://github.com/tolitius/mount[Mount] to make it easy to start and to reload changes - see
-the helper functions in link:https://github.com/fulcrologic/fulcro-template/blob/master/src/dev/development.clj[`src/dev/development.clj`].
+the helper functions in link:https://github.com/fulcrologic/fulcro-template/blob/main/src/dev/development.clj[`src/dev/development.clj`].
 Client hot code reloading is handled automatically by https://shadow-cljs.org/[shadow-cljs].
 
 The main project source is in `src/main`, the frontend code in `.cljs` files in `+app.*+` and `+app.ui.*+`.
