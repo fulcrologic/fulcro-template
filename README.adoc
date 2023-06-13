@@ -303,7 +303,7 @@ First we need to add the ability to use tools.build by adding in `deps.edn` a ne
                    :ns-default build}
 ----
 
-I don't know what `:ns-default` does.
+According to the clojure website, the :ns-default specifies the default Clojure namespace to find the function specified on the classpath.
 
 You can find more resources about how to use `tools.build` https://clojure.org/guides/tools_build[here] and https://kozieiev.com/blog/packaging-clojure-into-jar-uberjar-with-tools-build/[here].
 
