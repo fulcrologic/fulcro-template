@@ -290,7 +290,56 @@ The source directory for making additions to your workspace is `src/workspaces`.
 
 IMPORTANT: Any namespace ending in `-ws` will be auto-detected and added to your workspace!
 
-== Standalone Runnable Jar (Production, with advanced optimized client js)
+== Standalone Runnable Jar (For production)
+This instance of the template uses tools.build now that depstar has been archived.
 
-See tools deps projects like Depstar. You'll need to make a release js build, optionally
-pre-compile your CLJ, and package it.  We will likely add a demo of this process soon.
+=== tools.build
+
+First we need to add the ability to use tools.build by adding in `deps.edn` a new `:alias` called `:build`. In this case we use `v0.9.4` because that's the most recent version, but you should probably use what ever the most recent stable version is.
+
+[source]
+----
+:build {:deps {io.github.clojure/tools.build {:git/tag "v0.9.4" :git/sha "76b78fe"}}
+                   :ns-default build}
+----
+
+I don't know what `:ns-default` does.
+
+You can find more resources about how to use `tools.build` https://clojure.org/guides/tools_build[here] and https://kozieiev.com/blog/packaging-clojure-into-jar-uberjar-with-tools-build/[here].
+
+Next, we need to add the `build.clj` file. Looking at the prior links, they'll explain in more detail the different sorts of functions you can add. The nice thing about tools.build is that it operates like other clojure code. When you write a function in this file, you can run it via the cli, and you know exactly what you're running at least at the top level.
+
+In our build file we just have two functions, `clean` and `uber`. All clean does is remove the target directory. Uber on the other hand is a function we can use to build an uberjar. Again, refer to the prior links for  more detail about what these functions are doing specifically (or just look at the functions yourself!).
+
+To run a build command, we can just write
+
+[source]
+----
+clj -T:build <function>
+----
+
+e.g.
+
+[source]
+----
+clj -T:build clean
+----
+or
+
+[source]
+----
+clj -T:build uber
+----
+
+All this is doing is running our `defn` functions in the build file!
+
+Once you run the uber command, it should generate a jar in the `target` directory, but you'll need to make sure it doesn't generate any errors first. Once you've had one successfully generated you can then run the jar to test that it's working!
+
+You can do that by running
+
+[source]
+----
+java -jar target/<jar name>
+----
+
+Then, hopefully, it should spin up the server. Don't forget to compile and release your shadow-cljs frontend code. Once you've run the jar, it should spin up an http server, at which point you can hit the index file to check that your code is running. In our case in our `prod.edn` file we've set the port to `8080` so we'll want to navigate to http://localhost:8080/index.html[localhost:8080/index.html]. If all has gone well, you now have a running production uberjar of your application. Yay!
