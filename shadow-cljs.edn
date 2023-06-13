@@ -37,4 +37,6 @@
                        :devtools   {:preloads           [com.fulcrologic.fulcro.inspect.preload]
                                     :http-root          "resources/public/workspaces"
                                     :http-port          8023
-                                    :http-resource-root "."}}}}
+                                    :http-resource-root "."}}
+          }
+ }
