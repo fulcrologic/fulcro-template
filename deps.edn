@@ -20,7 +20,9 @@
            ring/ring-core                      {:mvn/version "1.8.1"}
            ring/ring-defaults                  {:mvn/version "0.3.2"}}
 
- :aliases {:clj-tests {:extra-paths ["src/test"]
+ :aliases {:build {:deps {io.github.clojure/tools.build {:git/tag "v0.9.4" :git/sha "76b78fe"}}
+                   :ns-default build}
+           :clj-tests {:extra-paths ["src/test"]
                        :main-opts   ["-m" "kaocha.runner"]
                        :extra-deps  {lambdaisland/kaocha {:mvn/version "1.60.977"}}}
 
