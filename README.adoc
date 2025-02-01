@@ -9,33 +9,21 @@ endif::[]
 
 == Status
 
-This is an official template for a Fulcro starter project that might go on to become a production application. It includes a number 
-of features that a beginner *will not* need for just playing with the library (full CI test setup, workspaces), but is simple 
-enough that a beginner should have no real problem using it.
+This is an official template for a Fulcro starter project that might go on to become a production application. It includes a number of features that a beginner *will not* need for just playing with the library (full CI test setup, workspaces), but is simple enough that a beginner should have no real problem using it.
 
-Beginners should therefore either use this template, or just generate simple play projects from the instructions in
-the https://book.fulcrologic.com[Developer's Guide].
+Beginners should therefore either use this template, or just generate simple play projects from the instructions in the https://book.fulcrologic.com[Developer's Guide].
 
-Fulcro also has a Rapid Application Development add-on that makes building a production application faster and easier; 
-however, a *beginner* should *not* start with RAD except to satisfy surface-level curiosity. RAD requires that you understand
-the core library (even though most of it uses convention and configuration over actual code). If you understand Fulcro and are
-working on a real production application then you should probably consider using the setup from the
-https://github.com/fulcrologic/fulcro-rad-demo[Fulcro RAD demo] as starting point instead of this template. 
+Fulcro also has a Rapid Application Development add-on that makes building a production application faster and easier; however, a *beginner* should *not* start with RAD except to satisfy surface-level curiosity. RAD requires that you understand the core library (even though most of it uses convention and configuration over actual code). If you understand Fulcro and are working on a real production application then you should probably consider using the setup from the https://github.com/fulcrologic/fulcro-rad-demo[Fulcro RAD demo] as starting point instead of this template.
 
-RAD gives you a lot of leverage for a new project, and includes a number of pre-written patterns written *in* Fulcro.
-It includes very good HTML5 routing, form/report support. It *does not limit* your options, just expands what you have available
-by default.
+RAD gives you a lot of leverage for a new project, and includes a number of pre-written patterns written *in* Fulcro. It includes very good HTML5 routing, form/report support. It *does not limit* your options, just expands what you have available by default.
 
 == About This Template
 
-This template includes a server with a mock database and https://en.wikipedia.org/wiki/Cross-site_request_forgery[CSRF]
-protection and a client with login. It also integrates https://github.com/nubank/workspaces/[Nubank Workspaces] for a
-visual, interactive development environment for Fulcro components, which you can choose to use.
-Both backend Clojure and frontend ClojureScript REPLs are configured and started. There are also sample frontend tests.
+Last tested using Node version 20 and Oracle JDK version 22.
 
-The server code leverages https://github.com/tolitius/mount[Mount] to make it easy to start and to reload changes - see
-the helper functions in link:https://github.com/fulcrologic/fulcro-template/blob/main/src/dev/development.clj[`src/dev/development.clj`].
-Client hot code reloading is handled automatically by https://shadow-cljs.org/[shadow-cljs].
+This template includes a server with a mock database and https://en.wikipedia.org/wiki/Cross-site_request_forgery[CSRF] protection and a client with login. Both backend Clojure and frontend ClojureScript REPLs are configured and started. There are also sample frontend tests.
+
+The server code leverages https://github.com/tolitius/mount[Mount] to make it easy to start and to reload changes - see the helper functions in link:https://github.com/fulcrologic/fulcro-template/blob/main/src/dev/development.clj[`src/dev/development.clj`]. Client hot code reloading is handled automatically by https://shadow-cljs.org/[shadow-cljs].
 
 The main project source is in `src/main`, the frontend code in `.cljs` files in `+app.*+` and `+app.ui.*+`.
 
@@ -49,7 +37,7 @@ You will want to enable the `:dev` dependency while developing this project.  In
 This is a manual to get started with this example project.
 It comes with helper `npm run` scripts pre-loaded, you can find them in the package.json file.
 
-Typically you want to start the server and the _main_ and/or _workspaces_ (if you decided to use Nubank Workspaces) client builds. See below. You can simply start everything from the command line
+Typically you want to start the server and the _main_ client builds. See below. You can simply start everything from the command line
 
 ```Shell
 git clone --depth 1 -o fulcro-template https://github.com/fulcrologic/fulcro-template.git fulcro-app
@@ -72,7 +60,6 @@ development=> (start)
 # after modifications of the backend code run: `(restart)`
 # 4. Visit the application at http://localhost:3000
 
-# (Optional): Visit the Workspaces UI at http://localhost:3000/wslive.html
 # (Optional): Run tests via `npm run client/test` and visit http://localhost:8022
 ```
 
@@ -92,15 +79,6 @@ There you can kick off the compilation of the other targets.
 The instructions provided above do not start a REPL server for the backend, only a simple
 interactive REPL session. See the <<the-api-server,The API Server>> section below to learn
 how to start the server from a nREPL REPL that you can connect your editor to.
-
-=== Workspaces
-
-If you choose to use https://github.com/nubank/workspaces[Workspaces], you have two options,
-you can run them with the actual backend as described in the Quick Start above
-or you can run only the frontend part (communication with the backend will fail due to CSFR):
-`npm run client/workspaces` and visit http://localhost:8023
-
-Have a look at `src/workspaces`.
 
 == Detailed instructions
 
@@ -151,8 +129,6 @@ Shadow-cljs will also start a web server for any builds that configure one. This
 template configures one for workspaces (if running without the Clojure backend is enough for you),
 and one for tests:
 
-- Workspaces (without backend): http://localhost:8023
-- Workspaces (with the backend; start it first!): http://localhost:3000/wslive.html
 - Tests: http://localhost:8022
 
 See the server section below for working on the full-stack app itself.
@@ -279,16 +255,6 @@ There is a UNIX Makefile that includes all of the CI commands as the default tar
 ```
 make
 ```
-
-== Workspaces
-
-Workspaces is a project by Nubank that is written in Fulcro, and has great support for developing in
-Fulcro. It is similar to devcards but has a more powerful user interface, integration with Fulcro Inspect,
-and much more.
-
-The source directory for making additions to your workspace is `src/workspaces`.
-
-IMPORTANT: Any namespace ending in `-ws` will be auto-detected and added to your workspace!
 
 == Standalone Runnable Jar (Production, with advanced optimized client js)
 

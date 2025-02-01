@@ -1,6 +1,7 @@
 (ns app.client
   (:require
     [app.application :refer [SPA]]
+    [fulcro.inspect.tool :as it]
     [app.ui.root :as root]
     [com.fulcrologic.fulcro.application :as app]
     [app.ui.root :as root]
@@ -31,7 +32,8 @@
   (uism/begin! SPA session/session-machine ::session/session
     {:actor/login-form      root/Login
      :actor/current-session root/Session})
-  (app/mount! SPA root/Root "app" {:initialize-state? false}))
+  (app/mount! SPA root/Root "app" {:initialize-state? false})
+  (it/add-fulcro-inspect! SPA))
 
 (comment
   (inspect/app-started! SPA)
