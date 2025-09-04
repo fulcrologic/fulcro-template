@@ -7,10 +7,11 @@
                        :modules    {:main {:init-fn app.client/init}}
                        ;; guardrails checks only during dev
                        :dev        {:compiler-options
-                                    {:external-config {:guardrails {}}}}
+                                    {:external-config {:guardrails {}
+                                                       :fulcro     {:html-source-annotations? true}}}}
 
                        :devtools   {:after-load app.client/refresh
-                                    :preloads   [com.fulcrologic.fulcro.inspect.preload app.development-preload]}}
+                                    :preloads   [com.fulcrologic.devtools.chrome-preload app.development-preload]}}
 
           :test       {:target           :browser-test
                        :test-dir         "resources/public/js/test"
@@ -33,7 +34,7 @@
                        :ns-regexp  "-(test|ws)$"
                        :output-dir "resources/public/workspaces/js"
                        :asset-path "/workspaces/js"
-                       :devtools   {:preloads           [com.fulcrologic.fulcro.inspect.preload]
+                       :devtools   {:preloads           [com.fulcrologic.devtools.chrome-preload]
                                     :http-root          "resources/public/workspaces"
                                     :http-port          8023
                                     :http-resource-root "."}}}}
