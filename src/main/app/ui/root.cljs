@@ -1,18 +1,16 @@
 (ns app.ui.root
   (:require
     [app.model.session :as session]
-    [clojure.string :as str]
-    [com.fulcrologic.fulcro.dom :as dom :refer [div ul li p h3 button b]]
-    [com.fulcrologic.fulcro.dom.html-entities :as ent]
-    [com.fulcrologic.fulcro.dom.events :as evt]
-    [com.fulcrologic.fulcro.application :as app]
-    [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
-    [com.fulcrologic.fulcro.routing.dynamic-routing :as dr]
-    [com.fulcrologic.fulcro.ui-state-machines :as uism :refer [defstatemachine]]
-    [com.fulcrologic.fulcro.mutations :as m :refer [defmutation]]
-    [com.fulcrologic.fulcro.algorithms.merge :as merge]
     [com.fulcrologic.fulcro-css.css :as css]
     [com.fulcrologic.fulcro.algorithms.form-state :as fs]
+    [com.fulcrologic.fulcro.components :as comp :refer [defsc]]
+    [com.fulcrologic.fulcro.dom :as dom :refer [b button div h3 li p ul]]
+    [com.fulcrologic.fulcro.dom.events :as evt]
+    [com.fulcrologic.fulcro.dom.html-entities :as ent]
+    [com.fulcrologic.fulcro.mutations :as m :refer [defmutation]]
+    [com.fulcrologic.fulcro.react.hooks :as hooks]
+    [com.fulcrologic.fulcro.routing.dynamic-routing :as dr]
+    [com.fulcrologic.fulcro.ui-state-machines :as uism :refer [defstatemachine]]
     [taoensso.timbre :as log]))
 
 (defn field [{:keys [label valid? error-message] :as props}]
@@ -88,6 +86,7 @@
                                      :right    "0px"
                                      :top      "50px"}]]
    :initial-state {:account/email "" :ui/error ""}
+   :use-hooks?    :pure
    :ident         (fn [] [:component/id :login])}
   (let [current-state (uism/get-active-state this ::session/session)
         {current-user :account/name} (get props [:component/id :session])
@@ -139,7 +138,8 @@
   {:query         [:main/welcome-message]
    :initial-state {:main/welcome-message "Hi!"}
    :ident         (fn [] [:component/id :main])
-   :route-segment ["main"]}
+   :route-segment ["main"]
+   :use-hooks?    :pure}
   (div :.ui.container.segment
     (h3 "Main")
     (p (str "Welcome to the Fulcro template. "
@@ -151,10 +151,16 @@
   {:query         [:account/time-zone :account/real-name :account/crap]
    :ident         (fn [] [:component/id :settings])
    :route-segment ["settings"]
-   :initial-state {}}
-  (div :.ui.container.segment
-    (h3 "Settings")
-    (div "TODO")))
+   :initial-state {}
+   :use-hooks?    :pure}
+  (let [[v set-v!] (hooks/use-state 1)]
+    (div :.ui.container.segment
+      (h3 "Settings")
+      (div
+        (str "TODO " v))
+      (dom/button :.ui.button {:onClick (fn []
+                                          (set-v! (inc v)))}
+        "Increase"))))
 
 (dr/defrouter TopRouter [this props]
   {:router-targets [Main Signup SignupSuccess Settings]})
@@ -169,6 +175,7 @@
    :pre-merge     (fn [{:keys [data-tree]}]
                     (merge {:session/valid? false :account/name ""}
                       data-tree))
+   :use-hooks?    :pure
    :initial-state {:session/valid? false :account/name ""}})
 
 (def ui-session (comp/factory Session))
@@ -179,6 +186,7 @@
                    [::uism/asm-id ::TopRouter]
                    {:root/login (comp/get-query Login)}]
    :ident         (fn [] [:component/id :top-chrome])
+   :use-hooks?    :pure
    :initial-state {:root/router          {}
                    :root/login           {}
                    :root/current-session {}}}
@@ -199,5 +207,6 @@
 
 (defsc Root [this {:root/keys [top-chrome]}]
   {:query         [{:root/top-chrome (comp/get-query TopChrome)}]
+   :use-hooks?    :pure
    :initial-state {:root/top-chrome {}}}
   (ui-top-chrome top-chrome))
